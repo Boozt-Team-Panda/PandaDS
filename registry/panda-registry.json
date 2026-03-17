@@ -6,528 +6,103 @@
     "lastUpdated": "2026-03-17",
     "lastSession": "S3",
     "totalSessions": 3,
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "sessions": [
-    {
-      "id": "S1",
-      "date": "2026-01-27",
-      "topic": "Spacing token architecture — layer model definition",
-      "attendees": ["Patrick Ahrentløv", "Facundo Mau", "Justin Daneman", "Daniel Wennberg", "Rasmus Sander Larsen", "Danas Paulikas", "Frederik Røssell", "Marco Magrini", "Lasse Lind Dencker Sørensen"],
-      "decisions": 7,
-      "openThreads": 5,
-      "conflicts": 1,
-      "assumptions": 4,
-      "deferred": 3
-    },
-    {
-      "id": "S2",
-      "date": "2026-02",
-      "topic": "Token continuation — primitives, semantic model, export script",
-      "attendees": ["Facundo Mau", "Justin Daneman"],
-      "notes": "Partial attendee list — Daniel and Rasmus not present. Full record unverified.",
-      "decisions": 4,
-      "openThreads": 4,
-      "conflicts": 1,
-      "assumptions": 0,
-      "deferred": 0
-    },
-    {
-      "id": "S3",
-      "date": "2026-03-13",
-      "topic": "Governance restructure & roadmap reset",
-      "attendees": ["Facundo Mau", "Justin Daneman", "Daniel Wennberg", "Patrick Ahrentløv"],
-      "decisions": 12,
-      "openThreads": 5,
-      "conflicts": 0,
-      "assumptions": 3,
-      "deferred": 3
-    }
+    { "id":"S1","date":"2026-01-27","topic":"Spacing token architecture — layer model definition","attendees":["Patrick Ahrentløv","Facundo Mau","Justin Daneman","Daniel Wennberg","Rasmus Sander Larsen","Danas Paulikas","Frederik Røssell","Marco Magrini","Lasse Lind Dencker Sørensen"],"decisions":7,"openThreads":5,"conflicts":1,"assumptions":4,"deferred":3 },
+    { "id":"S2","date":"2026-02","topic":"Token continuation — primitives, semantic model, export script","attendees":["Facundo Mau","Justin Daneman"],"notes":"Partial attendee list — Daniel and Rasmus not present. Full record unverified.","decisions":4,"openThreads":4,"conflicts":1,"assumptions":0,"deferred":0 },
+    { "id":"S3","date":"2026-03-13","topic":"Governance restructure & roadmap reset","attendees":["Facundo Mau","Justin Daneman","Daniel Wennberg","Patrick Ahrentløv"],"decisions":12,"openThreads":5,"conflicts":0,"assumptions":3,"deferred":3 }
   ],
   "decisions": [
-    {
-      "id": "DS-1-001",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Spacing",
-      "statement": "Panda adopts a three-layer spacing token system: primitive (reference), semantic (system), and component.",
-      "context": "Mirrors color token structure. Enables mode nesting per platform, theme, and accessibility without combinatorial explosion.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-1-002",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Spacing",
-      "statement": "The four-point grid is confirmed as the base unit for spacing (not eight-point).",
-      "context": "",
-      "status": "stable"
-    },
-    {
-      "id": "DS-1-003",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Spacing",
-      "statement": "The semantic layer is the primary design layer. Component tokens are allowed only for platform-specific exceptions, not as a general override mechanism.",
-      "context": "Patrick's KISS position — component layer is a possibility, not a default.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-1-004",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Process",
-      "statement": "The semantic layer must remain finite and automated. Changes require cross-platform agreement via Slack or MR approval.",
-      "context": "",
-      "status": "stable"
-    },
-    {
-      "id": "DS-1-005",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Naming",
-      "statement": "Shared vocabulary confirmed: 'reference' = primitive layer, 'system' = semantic layer, 'component' = component layer.",
-      "context": "Proposed by Rasmus, confirmed by Facundo. All attendees aligned.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-1-006",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Process",
-      "statement": "Facundo and Justin will draft spacing token suggestions. iOS, Android, and web will each propose naming conventions. A common pattern will be extracted.",
-      "context": "",
-      "status": "stable"
-    },
-    {
-      "id": "DS-1-007",
-      "session": "S1",
-      "date": "2026-01-27",
-      "layer": "Tokens — Spacing",
-      "statement": "Four semantic spacing categories in scope: inset, stack, inline, and gutter. Names not locked — pending cross-platform input per DS-1-006.",
-      "context": "",
-      "status": "draft"
-    },
-    {
-      "id": "DS-2-001",
-      "session": "S2",
-      "date": "2026-02",
-      "layer": "Tokens — Spacing",
-      "statement": "Primitive token set defined and reviewed against scaled-up page examples (PDP, app, web).",
-      "context": "⚠️ Reconstructed from session summary — verify against full S2 record.",
-      "status": "unverified"
-    },
-    {
-      "id": "DS-2-002",
-      "session": "S2",
-      "date": "2026-02",
-      "layer": "Tokens — Architecture",
-      "statement": "Semantic layer = brands. Component layer = platforms. Cleaner mental model than Session 1 framing.",
-      "context": "Significant architectural decision — Facundo ratification required. ⚠️ Reconstructed.",
-      "status": "unverified"
-    },
-    {
-      "id": "DS-2-003",
-      "session": "S2",
-      "date": "2026-02",
-      "layer": "Tokens — Process",
-      "statement": "Export script defined as required tooling for token delivery. Owner not yet assigned.",
-      "context": "⚠️ Reconstructed — verify full detail against S2 record.",
-      "status": "unverified"
-    },
-    {
-      "id": "DS-2-004",
-      "session": "S2",
-      "date": "2026-02",
-      "layer": "Tokens — Spacing",
-      "statement": "Value 44 status (spacing, size, or component token) discussed but not resolved.",
-      "context": "⚠️ Reconstructed — classification of 44 still open as OPN-2-003.",
-      "status": "unverified"
-    },
-    {
-      "id": "DS-3-001",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Governance",
-      "statement": "The design system is treated as a design artifact first — design advances components without waiting for development sign-off.",
-      "context": "Progress stalled requiring cross-team consensus. Design holds veto on system decisions.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-002",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Governance",
-      "statement": "Design holds explicit veto power on design system decisions.",
-      "context": "Developers remain to flag technical gaps but design decides.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-003",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Governance",
-      "statement": "Sync meetings reduced to one representative per team plus Facundo. Patrick steps down; Daniel Wennberg remains as iOS rep.",
-      "context": "Too many voices caused stalls. Pruned as of this session.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-004",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Governance",
-      "statement": "A formal decision log is introduced to prevent reopening or overlapping past decisions.",
-      "context": "Without a log, same discussions recurred with no retained resolution.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-005",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Tokens — Spacing",
-      "statement": "The four-point grid mandate is reconfirmed. All spacing decisions follow it going forward.",
-      "context": "Restatement of DS-1-002 as a formal design veto decision.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-006",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Tokens — Process",
-      "statement": "Cross-platform token connection (Figma ↔ iOS ↔ Android automation) is temporarily deprioritized.",
-      "context": "Overhead too high at current stage. Primitive layer stable enough to proceed.",
-      "status": "draft"
-    },
-    {
-      "id": "DS-3-007",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Tokens",
-      "statement": "Immediate focus: finalize token layer — spacing, sizing, stroke width, and other numeric/string values.",
-      "context": "Once tokens are finalized, component work expected to accelerate.",
-      "status": "draft"
-    },
-    {
-      "id": "DS-3-008",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Tooling",
-      "statement": "The Claude project (panda-ds) is the official tool for sessions, decision log, and registry. Design = editor, developers = viewers/commenters.",
-      "context": "Explicitly confirmed in session.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-009",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Governance",
-      "statement": "Sync meetings continue bi-weekly. Meeting and channel ownership transfers to design team (Facundo).",
-      "context": "",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-010",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Components → Tokens",
-      "statement": "Component workflow: finalize tokens → bind component to tokens → design review → hand off to development.",
-      "context": "Prevents token decisions from being deferred until after component design.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-011",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Adoption",
-      "statement": "New components are planned as OKR candidates. Dev spends one OKR cycle implementing and fully adopting a component across all apps.",
-      "context": "OKRs are a planning vehicle, not a time constraint.",
-      "status": "stable"
-    },
-    {
-      "id": "DS-3-012",
-      "session": "S3",
-      "date": "2026-03-13",
-      "layer": "Process / Tooling",
-      "statement": "Figma versioning (Ready for Development frame saves a diffable version) must be actively communicated to all developers.",
-      "context": "Knowledge gap — developers were not using this feature.",
-      "status": "draft"
-    }
+    { "id":"DS-1-001","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","audience":"both","statement":"Panda adopts a three-layer spacing token system: primitive (reference), semantic (system), and component.","context":"Mirrors color token structure. Enables mode nesting per platform, theme, and accessibility without combinatorial explosion.","status":"stable" },
+    { "id":"DS-1-002","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","audience":"both","statement":"The four-point grid is confirmed as the base unit for spacing (not eight-point).","context":"","status":"stable" },
+    { "id":"DS-1-003","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","audience":"both","statement":"The semantic layer is the primary design layer. Component tokens are allowed only for platform-specific exceptions, not as a general override mechanism.","context":"Patrick's KISS position — component layer is a possibility, not a default.","status":"stable" },
+    { "id":"DS-1-004","session":"S1","date":"2026-01-27","layer":"Tokens — Process","audience":"both","statement":"The semantic layer must remain finite and automated. Changes require cross-platform agreement via Slack or MR approval.","context":"","status":"stable" },
+    { "id":"DS-1-005","session":"S1","date":"2026-01-27","layer":"Tokens — Naming","audience":"both","statement":"Shared vocabulary confirmed: 'reference' = primitive layer, 'system' = semantic layer, 'component' = component layer.","context":"Proposed by Rasmus, confirmed by Facundo. All attendees aligned.","status":"stable" },
+    { "id":"DS-1-006","session":"S1","date":"2026-01-27","layer":"Tokens — Process","audience":"design","statement":"Facundo and Justin will draft spacing token suggestions. iOS, Android, and web will each propose naming conventions. A common pattern will be extracted.","context":"","status":"stable" },
+    { "id":"DS-1-007","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","audience":"design","statement":"Four semantic spacing categories in scope: inset, stack, inline, and gutter. Names not locked — pending cross-platform input per DS-1-006.","context":"","status":"draft" },
+    { "id":"DS-2-001","session":"S2","date":"2026-02","layer":"Tokens — Spacing","audience":"design","statement":"Primitive token set defined and reviewed against scaled-up page examples (PDP, app, web).","context":"⚠️ Reconstructed from session summary — verify against full S2 record.","status":"unverified" },
+    { "id":"DS-2-002","session":"S2","date":"2026-02","layer":"Tokens — Architecture","audience":"both","statement":"Semantic layer = brands. Component layer = platforms. Cleaner mental model than Session 1 framing.","context":"Significant architectural decision — Facundo ratification required. ⚠️ Reconstructed.","status":"unverified" },
+    { "id":"DS-2-003","session":"S2","date":"2026-02","layer":"Tokens — Process","audience":"dev","statement":"Export script defined as required tooling for token delivery. Owner not yet assigned.","context":"⚠️ Reconstructed — verify full detail against S2 record.","status":"unverified" },
+    { "id":"DS-2-004","session":"S2","date":"2026-02","layer":"Tokens — Spacing","audience":"design","statement":"Value 44 status (spacing, size, or component token) discussed but not resolved.","context":"⚠️ Reconstructed — classification of 44 still open as OPN-2-003.","status":"unverified" },
+    { "id":"DS-3-001","session":"S3","date":"2026-03-13","layer":"Process / Governance","audience":"both","statement":"The design system is treated as a design artifact first — design advances components without waiting for development sign-off.","context":"Progress stalled requiring cross-team consensus. Design holds veto on system decisions.","status":"stable" },
+    { "id":"DS-3-002","session":"S3","date":"2026-03-13","layer":"Process / Governance","audience":"both","statement":"Design holds explicit veto power on design system decisions.","context":"Developers remain to flag technical gaps but design decides.","status":"stable" },
+    { "id":"DS-3-003","session":"S3","date":"2026-03-13","layer":"Process / Governance","audience":"both","statement":"Sync meetings reduced to one representative per team plus Facundo. Patrick steps down; Daniel Wennberg remains as iOS rep.","context":"Too many voices caused stalls. Pruned as of this session.","status":"stable" },
+    { "id":"DS-3-004","session":"S3","date":"2026-03-13","layer":"Process / Governance","audience":"both","statement":"A formal decision log is introduced to prevent reopening or overlapping past decisions.","context":"Without a log, same discussions recurred with no retained resolution.","status":"stable" },
+    { "id":"DS-3-005","session":"S3","date":"2026-03-13","layer":"Tokens — Spacing","audience":"both","statement":"The four-point grid mandate is reconfirmed. All spacing decisions follow it going forward.","context":"Restatement of DS-1-002 as a formal design veto decision.","status":"stable" },
+    { "id":"DS-3-006","session":"S3","date":"2026-03-13","layer":"Tokens — Process","audience":"both","statement":"Cross-platform token connection (Figma ↔ iOS ↔ Android automation) is temporarily deprioritized.","context":"Overhead too high at current stage. Primitive layer stable enough to proceed.","status":"draft" },
+    { "id":"DS-3-007","session":"S3","date":"2026-03-13","layer":"Tokens","audience":"design","statement":"Immediate focus: finalize token layer — spacing, sizing, stroke width, and other numeric/string values.","context":"Once tokens are finalized, component work expected to accelerate.","status":"draft" },
+    { "id":"DS-3-008","session":"S3","date":"2026-03-13","layer":"Process / Tooling","audience":"both","statement":"The Claude project (panda-ds) is the official tool for sessions, decision log, and registry. Design = editor, developers = viewers/commenters.","context":"Explicitly confirmed in session.","status":"stable" },
+    { "id":"DS-3-009","session":"S3","date":"2026-03-13","layer":"Process / Governance","audience":"both","statement":"Sync meetings continue bi-weekly. Meeting and channel ownership transfers to design team (Facundo).","context":"","status":"stable" },
+    { "id":"DS-3-010","session":"S3","date":"2026-03-13","layer":"Components → Tokens","audience":"both","statement":"Component workflow: finalize tokens → bind component to tokens → design review → hand off to development.","context":"Prevents token decisions from being deferred until after component design.","status":"stable" },
+    { "id":"DS-3-011","session":"S3","date":"2026-03-13","layer":"Process / Adoption","audience":"dev","statement":"New components are planned as OKR candidates. Dev spends one OKR cycle implementing and fully adopting a component across all apps.","context":"OKRs are a planning vehicle, not a time constraint.","status":"stable" },
+    { "id":"DS-3-012","session":"S3","date":"2026-03-13","layer":"Process / Tooling","audience":"dev","statement":"Figma versioning (Ready for Development frame saves a diffable version) must be actively communicated to all developers.","context":"Knowledge gap — developers were not using this feature.","status":"draft" }
   ],
   "openThreads": [
-    {
-      "id": "OPN-1-001",
-      "session": "S1",
-      "topic": "Naming convention for four semantic spacing token types",
-      "lastPosition": "Each platform to propose preferred names. UX to declare token count first.",
-      "needs": "Written platform proposals in Slack + UX draft shared first.",
-      "layer": "Tokens — Naming",
-      "priority": "high",
-      "blocks": "DS-1-007",
-      "status": "open"
-    },
-    {
-      "id": "OPN-1-002",
-      "session": "S1",
-      "topic": "Ownership of component token creation",
-      "lastPosition": "Facundo: UX leads. Rasmus: substantial workload if UX fully owns three platforms.",
-      "needs": "Explicit ownership model before component layer work begins.",
-      "layer": "Tokens — Process",
-      "priority": "med",
-      "blocks": "Component layer work",
-      "status": "open"
-    },
-    {
-      "id": "OPN-1-003",
-      "session": "S1",
-      "topic": "Tooling and automation for semantic layer",
-      "lastPosition": "Patrick: mandatory. No tool, pipeline, or ownership proposed.",
-      "needs": "Concrete tooling proposal — who builds it, what pipeline, what triggers MR.",
-      "layer": "Tokens — Process",
-      "priority": "high",
-      "blocks": "DS-1-004 execution",
-      "status": "open"
-    },
-    {
-      "id": "OPN-1-004",
-      "session": "S1",
-      "topic": "Actual token count per platform unknown",
-      "lastPosition": "Daniel: 'we don't know if you want 5 tokens or 50 tokens.'",
-      "needs": "Platforms to provide current usage scope before UX draft is finalized.",
-      "layer": "Tokens — Spacing",
-      "priority": "med",
-      "blocks": "DS-1-006 scope",
-      "status": "open"
-    },
-    {
-      "id": "OPN-1-005",
-      "session": "S1",
-      "topic": "Design ↔ Dev sync session structure and dynamics",
-      "lastPosition": "Not raised in Session 1. No decision on record.",
-      "needs": "Dedicated session or agenda item. Session owner needed.",
-      "layer": "Process / Governance",
-      "priority": "high",
-      "blocks": "Cross-discipline communication as Panda scales",
-      "status": "open"
-    },
-    {
-      "id": "OPN-2-001",
-      "session": "S2",
-      "topic": "Primitive set validation — include/exclude value 128",
-      "lastPosition": "Reviewed against page examples. Final call not logged. ⚠️ Reconstructed.",
-      "needs": "Full S2 record verification.",
-      "layer": "Tokens — Spacing",
-      "priority": "high",
-      "blocks": "DS-2-001 lock",
-      "status": "open"
-    },
-    {
-      "id": "OPN-2-002",
-      "session": "S2",
-      "topic": "DS-2-002 ratification by Facundo",
-      "lastPosition": "Semantic=brands / component=platforms model. Facundo sign-off needed.",
-      "needs": "Explicit ratification before architectural model is locked.",
-      "layer": "Tokens — Architecture",
-      "priority": "high",
-      "blocks": "DS-2-002",
-      "status": "open"
-    },
-    {
-      "id": "OPN-2-003",
-      "session": "S2",
-      "topic": "Value 44 — spacing, size, or component token?",
-      "lastPosition": "Discussed, not resolved.",
-      "needs": "Design decision on classification.",
-      "layer": "Tokens — Spacing",
-      "priority": "med",
-      "blocks": "Token finalization",
-      "status": "open"
-    },
-    {
-      "id": "OPN-2-004",
-      "session": "S2",
-      "topic": "Export script — owner not assigned",
-      "lastPosition": "Flagged across S1 and S2. Still nobody assigned.",
-      "needs": "Named owner from dev side.",
-      "layer": "Process / Tooling",
-      "priority": "high",
-      "blocks": "Token delivery pipeline",
-      "status": "open"
-    },
-    {
-      "id": "OPN-3-001",
-      "session": "S3",
-      "topic": "Minimum sizing values undefined",
-      "lastPosition": "One of two remaining hard questions after tokens are finalized.",
-      "needs": "Working session between Facundo and Justin once sizing tokens are further along.",
-      "layer": "Tokens",
-      "priority": "high",
-      "blocks": "DS-3-007",
-      "status": "open"
-    },
-    {
-      "id": "OPN-3-002",
-      "session": "S3",
-      "topic": "Icon handling strategy undefined",
-      "lastPosition": "Flagged alongside minimum sizing as the other major open question.",
-      "needs": "Design decision on how icons map to token/component layer across platforms.",
-      "layer": "Components",
-      "priority": "high",
-      "blocks": "DS-3-010",
-      "status": "open"
-    },
-    {
-      "id": "OPN-3-003",
-      "session": "S3",
-      "topic": "Brand change integration process (e.g. Outlet Nation)",
-      "lastPosition": "Upcoming real-world case. No design exists yet.",
-      "needs": "Process decision: token override? theme layer? per-component?",
-      "layer": "Tokens / Components",
-      "priority": "low",
-      "blocks": "—",
-      "status": "open"
-    },
-    {
-      "id": "OPN-3-004",
-      "session": "S3",
-      "topic": "Android representative vacant",
-      "lastPosition": "Lasse stepping back, looking for replacement.",
-      "needs": "Lasse to identify and onboard replacement.",
-      "layer": "Process",
-      "priority": "med",
-      "blocks": "—",
-      "status": "open"
-    },
-    {
-      "id": "OPN-3-005",
-      "session": "S3",
-      "topic": "DevConnect / Figma-to-GitLab integration",
-      "lastPosition": "Interesting but appears GitHub-only.",
-      "needs": "Verify if DevConnect supports GitLab or alternative exists.",
-      "layer": "Process / Tooling",
-      "priority": "low",
-      "blocks": "—",
-      "status": "open"
-    }
+    { "id":"OPN-1-001","session":"S1","topic":"Naming convention for four semantic spacing token types","lastPosition":"Each platform to propose preferred names. UX to declare token count first.","needs":"Written platform proposals in Slack + UX draft shared first.","layer":"Tokens — Naming","priority":"high","blocks":"DS-1-007","status":"open" },
+    { "id":"OPN-1-002","session":"S1","topic":"Ownership of component token creation","lastPosition":"Facundo: UX leads. Rasmus: substantial workload if UX fully owns three platforms.","needs":"Explicit ownership model before component layer work begins.","layer":"Tokens — Process","priority":"med","blocks":"Component layer work","status":"open" },
+    { "id":"OPN-1-003","session":"S1","topic":"Tooling and automation for semantic layer","lastPosition":"Patrick: mandatory. No tool, pipeline, or ownership proposed.","needs":"Concrete tooling proposal — who builds it, what pipeline, what triggers MR.","layer":"Tokens — Process","priority":"high","blocks":"DS-1-004 execution","status":"open" },
+    { "id":"OPN-1-004","session":"S1","topic":"Actual token count per platform unknown","lastPosition":"Daniel: 'we don't know if you want 5 tokens or 50 tokens.'","needs":"Platforms to provide current usage scope before UX draft is finalized.","layer":"Tokens — Spacing","priority":"med","blocks":"DS-1-006 scope","status":"open" },
+    { "id":"OPN-1-005","session":"S1","topic":"Design ↔ Dev sync session structure and dynamics","lastPosition":"Not raised in Session 1. No decision on record.","needs":"Dedicated session or agenda item. Session owner needed.","layer":"Process / Governance","priority":"high","blocks":"Cross-discipline communication as Panda scales","status":"open" },
+    { "id":"OPN-2-001","session":"S2","topic":"Primitive set validation — include/exclude value 128","lastPosition":"Reviewed against page examples. Final call not logged.","needs":"Full S2 record verification.","layer":"Tokens — Spacing","priority":"high","blocks":"DS-2-001 lock","status":"open" },
+    { "id":"OPN-2-002","session":"S2","topic":"DS-2-002 ratification by Facundo","lastPosition":"Semantic=brands / component=platforms model. Facundo sign-off needed.","needs":"Explicit ratification before architectural model is locked.","layer":"Tokens — Architecture","priority":"high","blocks":"DS-2-002","status":"open" },
+    { "id":"OPN-2-003","session":"S2","topic":"Value 44 — spacing, size, or component token?","lastPosition":"Discussed, not resolved.","needs":"Design decision on classification.","layer":"Tokens — Spacing","priority":"med","blocks":"Token finalization","status":"open" },
+    { "id":"OPN-2-004","session":"S2","topic":"Export script — owner not assigned","lastPosition":"Flagged across S1 and S2. Still nobody assigned.","needs":"Named owner from dev side.","layer":"Process / Tooling","priority":"high","blocks":"Token delivery pipeline","status":"open" },
+    { "id":"OPN-3-001","session":"S3","topic":"Minimum sizing values undefined","lastPosition":"One of two remaining hard questions after tokens are finalized.","needs":"Working session between Facundo and Justin once sizing tokens are further along.","layer":"Tokens","priority":"high","blocks":"DS-3-007","status":"open" },
+    { "id":"OPN-3-002","session":"S3","topic":"Icon handling strategy undefined","lastPosition":"Flagged alongside minimum sizing as the other major open question.","needs":"Design decision on how icons map to token/component layer across platforms.","layer":"Components","priority":"high","blocks":"DS-3-010","status":"open" },
+    { "id":"OPN-3-003","session":"S3","topic":"Brand change integration process (e.g. Outlet Nation)","lastPosition":"Upcoming real-world case. No design exists yet.","needs":"Process decision: token override? theme layer? per-component?","layer":"Tokens / Components","priority":"low","blocks":"—","status":"open" },
+    { "id":"OPN-3-004","session":"S3","topic":"Android representative vacant","lastPosition":"Lasse stepping back, looking for replacement.","needs":"Lasse to identify and onboard replacement.","layer":"Process","priority":"med","blocks":"—","status":"open" },
+    { "id":"OPN-3-005","session":"S3","topic":"DevConnect / Figma-to-GitLab integration","lastPosition":"Interesting but appears GitHub-only.","needs":"Verify if DevConnect supports GitLab or alternative exists.","layer":"Process / Tooling","priority":"low","blocks":"—","status":"open" }
   ],
   "conflicts": [
-    {
-      "id": "CFX-1-001",
-      "session": "S1",
-      "topic": "Semantic layer blast radius",
-      "previousDecision": "Daniel: semantic layer reintroduces blast radius — shared tokens mean nobody changes them, same paralysis as today.",
-      "currentDirection": "Facundo + Patrick: component layer contains blast radius. Semantic stays clean if exceptions go to component tokens.",
-      "implKeepOld": "Semantic layer freezes in practice. Workarounds accumulate at component level anyway.",
-      "implGoNew": "Semantic layer stays clean and finite. Component exceptions stay scoped.",
-      "resolutionStatus": "unresolved",
-      "notes": "Daniel said 'let's go' but framed it as predicting what happens in a year — not a retraction. Must be validated with a live primitives+semantic example.",
-      "sessionResolved": null
-    },
-    {
-      "id": "CFX-2-001",
-      "session": "S2",
-      "topic": "DS-2-002 naming sign-off — Daniel and Rasmus not present",
-      "previousDecision": "DS-1-006: naming process requires cross-platform input from iOS, Android, and web.",
-      "currentDirection": "DS-2-002 token names agreed in S2 without Daniel and Rasmus present. ⚠️ Reconstructed.",
-      "implKeepOld": "DS-2-002 names may need to be reopened if Daniel/Rasmus object.",
-      "implGoNew": "Names proceed as agreed — teams accept outcome of smaller session.",
-      "resolutionStatus": "unresolved",
-      "notes": "Needs explicit confirmation from Daniel and Rasmus before DS-2-002 is marked stable.",
-      "sessionResolved": null
-    }
+    { "id":"CFX-1-001","session":"S1","topic":"Semantic layer blast radius","previousDecision":"Daniel: semantic layer reintroduces blast radius — shared tokens mean nobody changes them, same paralysis as today.","currentDirection":"Facundo + Patrick: component layer contains blast radius. Semantic stays clean if exceptions go to component tokens.","implKeepOld":"Semantic layer freezes in practice. Workarounds accumulate at component level anyway.","implGoNew":"Semantic layer stays clean and finite. Component exceptions stay scoped.","resolutionStatus":"unresolved","notes":"Daniel said 'let's go' but framed it as predicting what happens in a year — not a retraction. Must be validated with a live primitives+semantic example.","sessionResolved":null },
+    { "id":"CFX-2-001","session":"S2","topic":"DS-2-002 naming sign-off — Daniel and Rasmus not present","previousDecision":"DS-1-006: naming process requires cross-platform input from iOS, Android, and web.","currentDirection":"DS-2-002 token names agreed in S2 without Daniel and Rasmus present. ⚠️ Reconstructed.","implKeepOld":"DS-2-002 names may need to be reopened if Daniel/Rasmus object.","implGoNew":"Names proceed as agreed — teams accept outcome of smaller session.","resolutionStatus":"unresolved","notes":"Needs explicit confirmation from Daniel and Rasmus before DS-2-002 is marked stable.","sessionResolved":null }
   ],
   "assumptions": [
-    {
-      "id": "ASM-1-001",
-      "session": "S1",
-      "statement": "The semantic layer will remain small and stable once established, rarely requiring changes.",
-      "risk": "Automation breaks; governance overhead grows; platform adoption stalls.",
-      "status": "open"
-    },
-    {
-      "id": "ASM-1-002",
-      "session": "S1",
-      "statement": "Component tokens will be needed for only a small minority of exceptions (~0.5% per Rasmus's reference).",
-      "risk": "Component layer grows uncontrollably, reproducing the complexity it was meant to isolate.",
-      "status": "open"
-    },
-    {
-      "id": "ASM-1-003",
-      "session": "S1",
-      "statement": "Typography token mode-switching can serve as the working template for spacing token mode behavior.",
-      "risk": "Spacing modes behave differently — analogy breaks, layer model needs structural revision.",
-      "status": "open"
-    },
-    {
-      "id": "ASM-1-004",
-      "session": "S1",
-      "statement": "Tablet breakpoint support can be deferred without structural consequences.",
-      "risk": "Adding tablet later may require token renames or additional layer abstraction.",
-      "status": "open"
-    },
-    {
-      "id": "ASM-3-001",
-      "session": "S3",
-      "statement": "Once the token layer is finalized, component work will accelerate rapidly.",
-      "risk": "Token finalization may reveal additional unresolved questions (OPN-3-001, OPN-3-002) that re-introduce delays.",
-      "status": "open"
-    },
-    {
-      "id": "ASM-3-002",
-      "session": "S3",
-      "statement": "The primitive token layer will not change significantly after being locked.",
-      "risk": "Any change cascades into semantic and component tokens, invalidating downstream work.",
-      "status": "open"
-    },
-    {
-      "id": "ASM-3-003",
-      "session": "S3",
-      "statement": "Existing components can be retrofitted to the four-point grid without major rework.",
-      "risk": "Some components may require more effort, particularly where no Figma source exists (e.g. onboarding).",
-      "status": "open"
-    }
+    { "id":"ASM-1-001","session":"S1","statement":"The semantic layer will remain small and stable once established, rarely requiring changes.","risk":"Automation breaks; governance overhead grows; platform adoption stalls.","status":"open" },
+    { "id":"ASM-1-002","session":"S1","statement":"Component tokens will be needed for only a small minority of exceptions (~0.5% per Rasmus's reference).","risk":"Component layer grows uncontrollably, reproducing the complexity it was meant to isolate.","status":"open" },
+    { "id":"ASM-1-003","session":"S1","statement":"Typography token mode-switching can serve as the working template for spacing token mode behavior.","risk":"Spacing modes behave differently — analogy breaks, layer model needs structural revision.","status":"open" },
+    { "id":"ASM-1-004","session":"S1","statement":"Tablet breakpoint support can be deferred without structural consequences.","risk":"Adding tablet later may require token renames or additional layer abstraction.","status":"open" },
+    { "id":"ASM-3-001","session":"S3","statement":"Once the token layer is finalized, component work will accelerate rapidly.","risk":"Token finalization may reveal additional unresolved questions (OPN-3-001, OPN-3-002) that re-introduce delays.","status":"open" },
+    { "id":"ASM-3-002","session":"S3","statement":"The primitive token layer will not change significantly after being locked.","risk":"Any change cascades into semantic and component tokens, invalidating downstream work.","status":"open" },
+    { "id":"ASM-3-003","session":"S3","statement":"Existing components can be retrofitted to the four-point grid without major rework.","risk":"Some components may require more effort, particularly where no Figma source exists (e.g. onboarding).","status":"open" }
   ],
   "deferred": [
-    {
-      "id": "DEF-1-001",
-      "session": "S1",
-      "topic": "Icons — internal spacing, glyph-level spacing, token relationship",
-      "reason": "Time + complexity. Patrick: 'can of worms, not opening it now.' Justin flagged icons may reference spacing tokens.",
-      "revisit": "Session 2 or after semantics example reviewed."
-    },
-    {
-      "id": "DEF-1-002",
-      "session": "S1",
-      "topic": "Component layer in practice — examples, anatomy, governance",
-      "reason": "Premature until semantic layer draft is defined.",
-      "revisit": "Session 3 or when DS-1-006 draft is complete and reviewed."
-    },
-    {
-      "id": "DEF-1-003",
-      "session": "S1",
-      "topic": "Design ↔ Dev sync session dynamics restructuring",
-      "reason": "Not raised in Session 1. Zero context logged.",
-      "revisit": "Standalone agenda item — needs a session owner."
-    },
-    {
-      "id": "DEF-3-001",
-      "session": "S3",
-      "topic": "Cross-platform token automation (Figma ↔ iOS ↔ Android)",
-      "reason": "Overhead too high at current stage. DS-3-006.",
-      "revisit": "After token layer finalized and at least one component bound and reviewed."
-    },
-    {
-      "id": "DEF-3-002",
-      "session": "S3",
-      "topic": "Presentation of DS at web app meetup",
-      "reason": "Waiting on token layer + typography + foundational elements.",
-      "revisit": "When DS-3-007 is closed and token layer is stable."
-    },
-    {
-      "id": "DEF-3-003",
-      "session": "S3",
-      "topic": "Figma DevConnect / GitLab integration evaluation",
-      "reason": "Appears GitHub-only. OPN-3-005.",
-      "revisit": "If GitLab-compatible path is identified."
-    }
-  ]
+    { "id":"DEF-1-001","session":"S1","topic":"Icons — internal spacing, glyph-level spacing, token relationship","reason":"Time + complexity. Patrick: 'can of worms, not opening it now.' Justin flagged icons may reference spacing tokens.","revisit":"After semantics example reviewed." },
+    { "id":"DEF-1-002","session":"S1","topic":"Component layer in practice — examples, anatomy, governance","reason":"Premature until semantic layer draft is defined.","revisit":"When DS-1-006 draft is complete and reviewed." },
+    { "id":"DEF-1-003","session":"S1","topic":"Design ↔ Dev sync session dynamics restructuring","reason":"Not raised in Session 1. Zero context logged.","revisit":"Standalone agenda item — needs a session owner." },
+    { "id":"DEF-3-001","session":"S3","topic":"Cross-platform token automation (Figma ↔ iOS ↔ Android)","reason":"Overhead too high at current stage. DS-3-006.","revisit":"After token layer finalized and at least one component bound and reviewed." },
+    { "id":"DEF-3-002","session":"S3","topic":"Presentation of DS at web app meetup","reason":"Waiting on token layer + typography + foundational elements.","revisit":"When DS-3-007 is closed and token layer is stable." },
+    { "id":"DEF-3-003","session":"S3","topic":"Figma DevConnect / GitLab integration evaluation","reason":"Appears GitHub-only. OPN-3-005.","revisit":"If GitLab-compatible path is identified." }
+  ],
+  "designSystem": {
+    "tokens": [
+      { "id":"TOK-001","name":"spacing.primitive.0","category":"Spacing","layer":"primitive","value":"0px","alias":null,"description":"Zero spacing — explicit zero, not absence of token","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-002","name":"spacing.primitive.2","category":"Spacing","layer":"primitive","value":"2px","alias":null,"description":"Half-unit — use sparingly for micro adjustments only","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-003","name":"spacing.primitive.4","category":"Spacing","layer":"primitive","value":"4px","alias":null,"description":"Base grid unit (1×). Foundation of all spacing decisions per DS-1-002","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-004","name":"spacing.primitive.8","category":"Spacing","layer":"primitive","value":"8px","alias":null,"description":"2× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-005","name":"spacing.primitive.12","category":"Spacing","layer":"primitive","value":"12px","alias":null,"description":"3× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-006","name":"spacing.primitive.16","category":"Spacing","layer":"primitive","value":"16px","alias":null,"description":"4× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-007","name":"spacing.primitive.24","category":"Spacing","layer":"primitive","value":"24px","alias":null,"description":"6× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-008","name":"spacing.primitive.32","category":"Spacing","layer":"primitive","value":"32px","alias":null,"description":"8× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-009","name":"spacing.primitive.40","category":"Spacing","layer":"primitive","value":"40px","alias":null,"description":"10× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-010","name":"spacing.primitive.48","category":"Spacing","layer":"primitive","value":"48px","alias":null,"description":"12× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-011","name":"spacing.primitive.64","category":"Spacing","layer":"primitive","value":"64px","alias":null,"description":"16× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-012","name":"spacing.primitive.80","category":"Spacing","layer":"primitive","value":"80px","alias":null,"description":"20× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-013","name":"spacing.primitive.96","category":"Spacing","layer":"primitive","value":"96px","alias":null,"description":"24× base unit","status":"draft","platforms":{"web":"draft","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-014","name":"spacing.primitive.128","category":"Spacing","layer":"primitive","value":"128px","alias":null,"description":"32× base unit — inclusion pending OPN-2-001","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":"S2" },
+      { "id":"TOK-015","name":"spacing.semantic.inset.*","category":"Spacing","layer":"semantic","value":"TBD","alias":"spacing.primitive.*","description":"Inset spacing — padding within contained elements. Naming pending OPN-1-001","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-016","name":"spacing.semantic.stack.*","category":"Spacing","layer":"semantic","value":"TBD","alias":"spacing.primitive.*","description":"Stack spacing — vertical gap between stacked elements. Naming pending OPN-1-001","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-017","name":"spacing.semantic.inline.*","category":"Spacing","layer":"semantic","value":"TBD","alias":"spacing.primitive.*","description":"Inline spacing — horizontal gap between inline elements. Naming pending OPN-1-001","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-018","name":"spacing.semantic.gutter.*","category":"Spacing","layer":"semantic","value":"TBD","alias":"spacing.primitive.*","description":"Gutter spacing — layout-level column and row gaps. Naming pending OPN-1-001","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":"S1" },
+      { "id":"TOK-019","name":"color.*","category":"Color","layer":"primitive","value":"TBD","alias":null,"description":"Color token system — three-layer model assumed. Not yet in scope for this phase.","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":null },
+      { "id":"TOK-020","name":"typography.*","category":"Typography","layer":"primitive","value":"TBD","alias":null,"description":"Typography tokens — used as reference model for spacing mode behavior (ASM-1-003). Not yet documented.","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":null },
+      { "id":"TOK-021","name":"sizing.*","category":"Sizing","layer":"primitive","value":"TBD","alias":null,"description":"Sizing tokens — stroke width, touch targets, icon sizes. Queued per DS-3-007. Open: minimum sizing OPN-3-001.","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":"S3" },
+      { "id":"TOK-022","name":"radius.*","category":"Radius","layer":"primitive","value":"TBD","alias":null,"description":"Border radius tokens — not yet discussed.","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":null },
+      { "id":"TOK-023","name":"motion.*","category":"Motion","layer":"primitive","value":"TBD","alias":null,"description":"Motion and animation duration/easing tokens — not yet discussed.","status":"tbd","platforms":{"web":"tbd","ios":"tbd","android":"tbd"},"session":null }
+    ],
+    "components": [],
+    "patterns": [],
+    "templates": []
+  }
 }
