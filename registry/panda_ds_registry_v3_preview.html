@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panda DS Registry</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0f0f0f;
+  --white: #fafaf8;
+  --gray-50: #f5f5f3;
+  --gray-100: #ebebea;
+  --gray-200: #d6d6d4;
+  --gray-400: #9e9e9b;
+  --gray-600: #5c5c5a;
+  --gray-800: #2a2a28;
+  --accent: #e8ff47;
+  --accent-dark: #c8df00;
+  --s1: #bfdbfe;
+  --s1-text: #1e3a5f;
+  --s2: #fce7f3;
+  --s2-text: #6b1a3a;
+  --s3: #d1fae5;
+  --s3-text: #064e2e;
+  --stable: #d1fae5; --stable-t: #064e2e;
+  --draft: #fef9c3; --draft-t: #713f12;
+  --unverified: #ede9fe; --unverified-t: #3b0764;
+  --blocked: #fee2e2; --blocked-t: #7f1d1d;
+  --high: #fee2e2; --high-t: #7f1d1d;
+  --med: #fef9c3; --med-t: #713f12;
+  --low: #d1fae5; --low-t: #064e2e;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--gray-50); color: var(--black); min-height: 100vh; }
+
+/* LAYOUT */
+.shell { display: grid; grid-template-columns: 220px 1fr; grid-template-rows: auto 1fr; min-height: 100vh; }
+.header { grid-column: 1 / -1; background: var(--black); color: var(--white); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.header-left { display: flex; align-items: center; gap: 16px; }
+.logo { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--white); }
+.logo span { color: var(--accent); }
+.header-meta { font-family: var(--font-mono); font-size: 11px; color: var(--gray-400); }
+.gh-btn { font-family: var(--font-mono); font-size: 11px; color: var(--gray-400); text-decoration: none; border: 0.5px solid var(--gray-600); border-radius: 3px; padding: 4px 10px; transition: all 0.15s; }
+.gh-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* SIDEBAR */
+.sidebar { background: var(--black); color: var(--white); padding: 20px 0; border-right: 0px; display: flex; flex-direction: column; gap: 0; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar-section { padding: 0 0 16px; }
+.sidebar-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: var(--gray-600); padding: 0 20px 8px; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 20px; cursor: pointer; font-size: 13px; color: var(--gray-400); transition: all 0.1s; border-left: 2px solid transparent; }
+.nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+.nav-item.active { color: var(--white); border-left-color: var(--accent); background: rgba(232,255,71,0.06); }
+.nav-count { font-family: var(--font-mono); font-size: 10px; color: var(--gray-600); background: var(--gray-800); padding: 1px 6px; border-radius: 99px; }
+.nav-item.active .nav-count { background: rgba(232,255,71,0.15); color: var(--accent); }
+.sidebar-divider { height: 0.5px; background: var(--gray-800); margin: 8px 20px 16px; }
+.session-filter { padding: 0 20px; display: flex; flex-direction: column; gap: 4px; }
+.sess-btn { font-family: var(--font-mono); font-size: 11px; padding: 5px 10px; border-radius: 4px; cursor: pointer; border: 0.5px solid transparent; text-align: left; transition: all 0.1s; }
+.sess-btn-all { color: var(--gray-400); background: transparent; border-color: var(--gray-800); }
+.sess-btn-all:hover, .sess-btn-all.active { color: var(--white); border-color: var(--gray-600); background: var(--gray-800); }
+.sess-btn-S1 { color: var(--s1-text); background: rgba(191,219,254,0.12); border-color: rgba(191,219,254,0.2); }
+.sess-btn-S1:hover, .sess-btn-S1.active { background: rgba(191,219,254,0.25); border-color: var(--s1); }
+.sess-btn-S2 { color: #f9a8d4; background: rgba(252,231,243,0.08); border-color: rgba(252,231,243,0.15); }
+.sess-btn-S2:hover, .sess-btn-S2.active { background: rgba(252,231,243,0.18); border-color: #f9a8d4; }
+.sess-btn-S3 { color: #6ee7b7; background: rgba(209,250,229,0.08); border-color: rgba(209,250,229,0.15); }
+.sess-btn-S3:hover, .sess-btn-S3.active { background: rgba(209,250,229,0.18); border-color: #6ee7b7; }
+
+/* MAIN */
+.main { padding: 28px 32px; overflow-y: auto; }
+.page-title { font-size: 11px; font-family: var(--font-mono); color: var(--gray-400); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+
+/* STATS ROW */
+.stats-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 28px; }
+.stat { background: var(--white); border: 0.5px solid var(--gray-200); border-radius: 8px; padding: 16px 20px; }
+.stat-num { font-size: 28px; font-weight: 300; font-family: var(--font-mono); line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--gray-400); }
+.stat-sub { font-size: 10px; font-family: var(--font-mono); color: var(--gray-400); margin-top: 6px; }
+.stat-highlight { background: var(--black); color: var(--white); }
+.stat-highlight .stat-label { color: var(--gray-400); }
+.stat-highlight .stat-sub { color: var(--gray-600); }
+.stat-highlight .stat-num { color: var(--accent); }
+
+/* CARDS */
+.cards { display: flex; flex-direction: column; gap: 1px; }
+.card { background: var(--white); border: 0.5px solid var(--gray-200); border-radius: 6px; overflow: hidden; transition: border-color 0.15s; margin-bottom: 1px; }
+.card:hover { border-color: var(--gray-400); }
+.card-header { display: grid; grid-template-columns: 100px 52px 1fr auto; gap: 12px; align-items: start; padding: 14px 16px; cursor: pointer; }
+.card-id { font-family: var(--font-mono); font-size: 11px; color: var(--gray-600); font-weight: 500; padding-top: 1px; }
+.card-statement { font-size: 13px; line-height: 1.5; font-weight: 400; }
+.card-meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.card-body { padding: 0 16px 14px 164px; border-top: 0.5px solid var(--gray-100); margin-top: 2px; padding-top: 12px; display: none; }
+.card-body.open { display: block; }
+.card-body-grid { display: grid; grid-template-columns: 100px 1fr; gap: 6px 12px; font-size: 12px; }
+.card-body-label { color: var(--gray-400); font-family: var(--font-mono); font-size: 10px; padding-top: 1px; }
+.card-body-val { color: var(--gray-800); line-height: 1.5; }
+.card-layer { font-size: 11px; color: var(--gray-600); margin-top: 2px; }
+.card-expand-hint { font-family: var(--font-mono); font-size: 10px; color: var(--gray-400); margin-top: 10px; }
+
+/* PILLS */
+.pill { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.pill-stable { background: var(--stable); color: var(--stable-t); }
+.pill-draft { background: var(--draft); color: var(--draft-t); }
+.pill-unverified { background: var(--unverified); color: var(--unverified-t); }
+.pill-blocked { background: var(--blocked); color: var(--blocked-t); }
+.pill-unresolved { background: var(--blocked); color: var(--blocked-t); }
+.pill-resolved { background: var(--stable); color: var(--stable-t); }
+.pill-open { background: var(--gray-100); color: var(--gray-600); }
+.pill-high { background: var(--high); color: var(--high-t); }
+.pill-med { background: var(--med); color: var(--med-t); }
+.pill-low { background: var(--low); color: var(--low-t); }
+.pill-S1 { background: var(--s1); color: var(--s1-text); }
+.pill-S2 { background: var(--s2); color: var(--s2-text); }
+.pill-S3 { background: var(--s3); color: var(--s3-text); }
+
+/* FILTER BAR */
+.filter-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.filter-label { font-size: 11px; color: var(--gray-400); font-family: var(--font-mono); }
+.filter-chip { font-family: var(--font-mono); font-size: 10px; padding: 3px 10px; border: 0.5px solid var(--gray-200); border-radius: 3px; cursor: pointer; background: var(--white); color: var(--gray-600); transition: all 0.1s; }
+.filter-chip:hover { border-color: var(--gray-400); color: var(--black); }
+.filter-chip.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+/* EMPTY + LOADING */
+.empty-state { text-align: center; padding: 48px; color: var(--gray-400); font-size: 13px; font-family: var(--font-mono); }
+.loading { text-align: center; padding: 48px; color: var(--gray-400); font-size: 13px; }
+
+/* SESSIONS VIEW */
+.session-card { background: var(--white); border: 0.5px solid var(--gray-200); border-radius: 8px; padding: 20px 24px; margin-bottom: 8px; }
+.session-card-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.session-card-title { font-size: 15px; font-weight: 500; }
+.session-card-date { font-family: var(--font-mono); font-size: 11px; color: var(--gray-400); }
+.session-stats { display: flex; gap: 16px; margin-bottom: 10px; }
+.session-stat { font-family: var(--font-mono); font-size: 11px; color: var(--gray-600); }
+.session-stat strong { color: var(--black); }
+.session-attendees { font-size: 12px; color: var(--gray-600); line-height: 1.6; }
+.session-note { font-size: 11px; color: #92400e; background: #fef9c3; border-radius: 4px; padding: 6px 10px; margin-top: 8px; font-family: var(--font-mono); }
+
+/* NOTICE */
+.notice { background: #fefce8; border: 0.5px solid #fef08a; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #854d0e; margin-bottom: 16px; font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">PANDA<span>·</span>DS <span style="color:var(--gray-600);margin-left:4px">/ registry</span></div>
+      <div class="header-meta" id="header-meta">—</div>
+    </div>
+    <a class="gh-btn" href="https://github.com/Boozt-Team-Panda/PandaDS" target="_blank">↗ github</a>
+  </header>
+
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+      <div class="nav-item active" data-tab="decisions">Decisions <span class="nav-count" id="cnt-decisions">—</span></div>
+      <div class="nav-item" data-tab="open">Open threads <span class="nav-count" id="cnt-open">—</span></div>
+      <div class="nav-item" data-tab="conflicts">Conflicts <span class="nav-count" id="cnt-conflicts">—</span></div>
+      <div class="nav-item" data-tab="assumptions">Assumptions <span class="nav-count" id="cnt-assumptions">—</span></div>
+      <div class="nav-item" data-tab="deferred">Deferred <span class="nav-count" id="cnt-deferred">—</span></div>
+      <div class="nav-item" data-tab="sessions">Sessions <span class="nav-count" id="cnt-sessions">—</span></div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Filter by session</div>
+      <div class="session-filter" id="session-filter">
+        <button class="sess-btn sess-btn-all active" onclick="setSess('all')">All sessions</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main" id="main">
+    <div class="loading">Loading registry…</div>
+  </main>
+</div>
+
+<script>
+const REGISTRY_URL = './panda-registry.json';
+let DATA = null;
+let activeTab = 'decisions', activeSession = 'all', activeFilter = 'all', expandedCard = null;
+
+// --- EMBEDDED FALLBACK DATA (same as panda-registry.json) ---
+const FALLBACK = {"meta":{"project":"Panda DS","organization":"Boozt","repo":"https://github.com/Boozt-Team-Panda/PandaDS","lastUpdated":"2026-03-17","lastSession":"S3","totalSessions":3,"version":"1.0.0"},"sessions":[{"id":"S1","date":"2026-01-27","topic":"Spacing token architecture — layer model definition","attendees":["Patrick Ahrentløv","Facundo Mau","Justin Daneman","Daniel Wennberg","Rasmus Sander Larsen","Danas Paulikas","Frederik Røssell","Marco Magrini","Lasse Lind Dencker Sørensen"],"decisions":7,"openThreads":5,"conflicts":1,"assumptions":4,"deferred":3},{"id":"S2","date":"2026-02","topic":"Token continuation — primitives, semantic model, export script","attendees":["Facundo Mau","Justin Daneman"],"notes":"Partial attendee list — Daniel and Rasmus not present. Full record unverified.","decisions":4,"openThreads":4,"conflicts":1,"assumptions":0,"deferred":0},{"id":"S3","date":"2026-03-13","topic":"Governance restructure & roadmap reset","attendees":["Facundo Mau","Justin Daneman","Daniel Wennberg","Patrick Ahrentløv"],"decisions":12,"openThreads":5,"conflicts":0,"assumptions":3,"deferred":3}],"decisions":[{"id":"DS-1-001","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"Panda adopts a three-layer spacing token system: primitive (reference), semantic (system), and component.","context":"Mirrors color token structure. Enables mode nesting per platform, theme, and accessibility without combinatorial explosion.","status":"stable"},{"id":"DS-1-002","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"The four-point grid is confirmed as the base unit for spacing (not eight-point).","context":"","status":"stable"},{"id":"DS-1-003","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"The semantic layer is the primary design layer. Component tokens are allowed only for platform-specific exceptions, not as a general override mechanism.","context":"Patrick's KISS position — component layer is a possibility, not a default.","status":"stable"},{"id":"DS-1-004","session":"S1","date":"2026-01-27","layer":"Tokens — Process","statement":"The semantic layer must remain finite and automated. Changes require cross-platform agreement via Slack or MR approval.","context":"","status":"stable"},{"id":"DS-1-005","session":"S1","date":"2026-01-27","layer":"Tokens — Naming","statement":"Shared vocabulary confirmed: 'reference' = primitive layer, 'system' = semantic layer, 'component' = component layer.","context":"Proposed by Rasmus, confirmed by Facundo. All attendees aligned.","status":"stable"},{"id":"DS-1-006","session":"S1","date":"2026-01-27","layer":"Tokens — Process","statement":"Facundo and Justin will draft spacing token suggestions. iOS, Android, and web will each propose naming conventions. A common pattern will be extracted.","context":"","status":"stable"},{"id":"DS-1-007","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"Four semantic spacing categories in scope: inset, stack, inline, and gutter. Names not locked — pending cross-platform input per DS-1-006.","context":"","status":"draft"},{"id":"DS-2-001","session":"S2","date":"2026-02","layer":"Tokens — Spacing","statement":"Primitive token set defined and reviewed against scaled-up page examples (PDP, app, web).","context":"⚠️ Reconstructed from session summary — verify against full S2 record.","status":"unverified"},{"id":"DS-2-002","session":"S2","date":"2026-02","layer":"Tokens — Architecture","statement":"Semantic layer = brands. Component layer = platforms. Cleaner mental model than Session 1 framing.","context":"Significant architectural decision — Facundo ratification required. ⚠️ Reconstructed.","status":"unverified"},{"id":"DS-2-003","session":"S2","date":"2026-02","layer":"Tokens — Process","statement":"Export script defined as required tooling for token delivery. Owner not yet assigned.","context":"⚠️ Reconstructed — verify full detail against S2 record.","status":"unverified"},{"id":"DS-2-004","session":"S2","date":"2026-02","layer":"Tokens — Spacing","statement":"Value 44 status (spacing, size, or component token) discussed but not resolved.","context":"⚠️ Reconstructed — classification of 44 still open as OPN-2-003.","status":"unverified"},{"id":"DS-3-001","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"The design system is treated as a design artifact first — design advances components without waiting for development sign-off.","context":"Progress stalled requiring cross-team consensus. Design holds veto on system decisions.","status":"stable"},{"id":"DS-3-002","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"Design holds explicit veto power on design system decisions.","context":"Developers remain to flag technical gaps but design decides.","status":"stable"},{"id":"DS-3-003","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"Sync meetings reduced to one representative per team plus Facundo. Patrick steps down; Daniel Wennberg remains as iOS rep.","context":"Too many voices caused stalls. Pruned as of this session.","status":"stable"},{"id":"DS-3-004","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"A formal decision log is introduced to prevent reopening or overlapping past decisions.","context":"Without a log, same discussions recurred with no retained resolution.","status":"stable"},{"id":"DS-3-005","session":"S3","date":"2026-03-13","layer":"Tokens — Spacing","statement":"The four-point grid mandate is reconfirmed. All spacing decisions follow it going forward.","context":"Restatement of DS-1-002 as a formal design veto decision.","status":"stable"},{"id":"DS-3-006","session":"S3","date":"2026-03-13","layer":"Tokens — Process","statement":"Cross-platform token connection (Figma ↔ iOS ↔ Android automation) is temporarily deprioritized.","context":"Overhead too high at current stage. Primitive layer stable enough to proceed.","status":"draft"},{"id":"DS-3-007","session":"S3","date":"2026-03-13","layer":"Tokens","statement":"Immediate focus: finalize token layer — spacing, sizing, stroke width, and other numeric/string values.","context":"Once tokens are finalized, component work expected to accelerate.","status":"draft"},{"id":"DS-3-008","session":"S3","date":"2026-03-13","layer":"Process / Tooling","statement":"The Claude project (panda-ds) is the official tool for sessions, decision log, and registry. Design = editor, developers = viewers/commenters.","context":"Explicitly confirmed in session.","status":"stable"},{"id":"DS-3-009","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"Sync meetings continue bi-weekly. Meeting and channel ownership transfers to design team (Facundo).","context":"","status":"stable"},{"id":"DS-3-010","session":"S3","date":"2026-03-13","layer":"Components → Tokens","statement":"Component workflow: finalize tokens → bind component to tokens → design review → hand off to development.","context":"Prevents token decisions from being deferred until after component design.","status":"stable"},{"id":"DS-3-011","session":"S3","date":"2026-03-13","layer":"Process / Adoption","statement":"New components are planned as OKR candidates. Dev spends one OKR cycle implementing and fully adopting a component across all apps.","context":"OKRs are a planning vehicle, not a time constraint.","status":"stable"},{"id":"DS-3-012","session":"S3","date":"2026-03-13","layer":"Process / Tooling","statement":"Figma versioning (Ready for Development frame saves a diffable version) must be actively communicated to all developers.","context":"Knowledge gap — developers were not using this feature.","status":"draft"}],"openThreads":[{"id":"OPN-1-001","session":"S1","topic":"Naming convention for four semantic spacing token types","lastPosition":"Each platform to propose preferred names. UX to declare token count first.","needs":"Written platform proposals in Slack + UX draft shared first.","layer":"Tokens — Naming","priority":"high","blocks":"DS-1-007","status":"open"},{"id":"OPN-1-002","session":"S1","topic":"Ownership of component token creation","lastPosition":"Facundo: UX leads. Rasmus: substantial workload if UX fully owns three platforms.","needs":"Explicit ownership model before component layer work begins.","layer":"Tokens — Process","priority":"med","blocks":"Component layer work","status":"open"},{"id":"OPN-1-003","session":"S1","topic":"Tooling and automation for semantic layer","lastPosition":"Patrick: mandatory. No tool, pipeline, or ownership proposed.","needs":"Concrete tooling proposal — who builds it, what pipeline, what triggers MR.","layer":"Tokens — Process","priority":"high","blocks":"DS-1-004 execution","status":"open"},{"id":"OPN-1-004","session":"S1","topic":"Actual token count per platform unknown","lastPosition":"Daniel: 'we don't know if you want 5 tokens or 50 tokens.'","needs":"Platforms to provide current usage scope before UX draft is finalized.","layer":"Tokens — Spacing","priority":"med","blocks":"DS-1-006 scope","status":"open"},{"id":"OPN-1-005","session":"S1","topic":"Design ↔ Dev sync session structure and dynamics","lastPosition":"Not raised in Session 1. No decision on record.","needs":"Dedicated session or agenda item. Session owner needed.","layer":"Process / Governance","priority":"high","blocks":"Cross-discipline communication as Panda scales","status":"open"},{"id":"OPN-2-001","session":"S2","topic":"Primitive set validation — include/exclude value 128","lastPosition":"Reviewed against page examples. Final call not logged. ⚠️ Reconstructed.","needs":"Full S2 record verification.","layer":"Tokens — Spacing","priority":"high","blocks":"DS-2-001 lock","status":"open"},{"id":"OPN-2-002","session":"S2","topic":"DS-2-002 ratification by Facundo","lastPosition":"Semantic=brands / component=platforms model. Facundo sign-off needed.","needs":"Explicit ratification before architectural model is locked.","layer":"Tokens — Architecture","priority":"high","blocks":"DS-2-002","status":"open"},{"id":"OPN-2-003","session":"S2","topic":"Value 44 — spacing, size, or component token?","lastPosition":"Discussed, not resolved.","needs":"Design decision on classification.","layer":"Tokens — Spacing","priority":"med","blocks":"Token finalization","status":"open"},{"id":"OPN-2-004","session":"S2","topic":"Export script — owner not assigned","lastPosition":"Flagged across S1 and S2. Still nobody assigned.","needs":"Named owner from dev side.","layer":"Process / Tooling","priority":"high","blocks":"Token delivery pipeline","status":"open"},{"id":"OPN-3-001","session":"S3","topic":"Minimum sizing values undefined","lastPosition":"One of two remaining hard questions after tokens are finalized.","needs":"Working session between Facundo and Justin once sizing tokens are further along.","layer":"Tokens","priority":"high","blocks":"DS-3-007","status":"open"},{"id":"OPN-3-002","session":"S3","topic":"Icon handling strategy undefined","lastPosition":"Flagged alongside minimum sizing as the other major open question.","needs":"Design decision on how icons map to token/component layer across platforms.","layer":"Components","priority":"high","blocks":"DS-3-010","status":"open"},{"id":"OPN-3-003","session":"S3","topic":"Brand change integration process (e.g. Outlet Nation)","lastPosition":"Upcoming real-world case. No design exists yet.","needs":"Process decision: token override? theme layer? per-component?","layer":"Tokens / Components","priority":"low","blocks":"—","status":"open"},{"id":"OPN-3-004","session":"S3","topic":"Android representative vacant","lastPosition":"Lasse stepping back, looking for replacement.","needs":"Lasse to identify and onboard replacement.","layer":"Process","priority":"med","blocks":"—","status":"open"},{"id":"OPN-3-005","session":"S3","topic":"DevConnect / Figma-to-GitLab integration","lastPosition":"Interesting but appears GitHub-only.","needs":"Verify if DevConnect supports GitLab or alternative exists.","layer":"Process / Tooling","priority":"low","blocks":"—","status":"open"}],"conflicts":[{"id":"CFX-1-001","session":"S1","topic":"Semantic layer blast radius","previousDecision":"Daniel: semantic layer reintroduces blast radius — shared tokens mean nobody changes them, same paralysis as today.","currentDirection":"Facundo + Patrick: component layer contains blast radius. Semantic stays clean if exceptions go to component tokens.","implKeepOld":"Semantic layer freezes in practice. Workarounds accumulate at component level anyway.","implGoNew":"Semantic layer stays clean and finite. Component exceptions stay scoped.","resolutionStatus":"unresolved","notes":"Daniel said 'let's go' but framed it as predicting what happens in a year — not a retraction. Must be validated with a live primitives+semantic example.","sessionResolved":null},{"id":"CFX-2-001","session":"S2","topic":"DS-2-002 naming sign-off — Daniel and Rasmus not present","previousDecision":"DS-1-006: naming process requires cross-platform input from iOS, Android, and web.","currentDirection":"DS-2-002 token names agreed in S2 without Daniel and Rasmus present. ⚠️ Reconstructed.","implKeepOld":"DS-2-002 names may need to be reopened if Daniel/Rasmus object.","implGoNew":"Names proceed as agreed — teams accept outcome of smaller session.","resolutionStatus":"unresolved","notes":"Needs explicit confirmation from Daniel and Rasmus before DS-2-002 is marked stable.","sessionResolved":null}],"assumptions":[{"id":"ASM-1-001","session":"S1","statement":"The semantic layer will remain small and stable once established, rarely requiring changes.","risk":"Automation breaks; governance overhead grows; platform adoption stalls.","status":"open"},{"id":"ASM-1-002","session":"S1","statement":"Component tokens will be needed for only a small minority of exceptions (~0.5% per Rasmus's reference).","risk":"Component layer grows uncontrollably, reproducing the complexity it was meant to isolate.","status":"open"},{"id":"ASM-1-003","session":"S1","statement":"Typography token mode-switching can serve as the working template for spacing token mode behavior.","risk":"Spacing modes behave differently — analogy breaks, layer model needs structural revision.","status":"open"},{"id":"ASM-1-004","session":"S1","statement":"Tablet breakpoint support can be deferred without structural consequences.","risk":"Adding tablet later may require token renames or additional layer abstraction.","status":"open"},{"id":"ASM-3-001","session":"S3","statement":"Once the token layer is finalized, component work will accelerate rapidly.","risk":"Token finalization may reveal additional unresolved questions (OPN-3-001, OPN-3-002) that re-introduce delays.","status":"open"},{"id":"ASM-3-002","session":"S3","statement":"The primitive token layer will not change significantly after being locked.","risk":"Any change cascades into semantic and component tokens, invalidating downstream work.","status":"open"},{"id":"ASM-3-003","session":"S3","statement":"Existing components can be retrofitted to the four-point grid without major rework.","risk":"Some components may require more effort, particularly where no Figma source exists (e.g. onboarding).","status":"open"}],"deferred":[{"id":"DEF-1-001","session":"S1","topic":"Icons — internal spacing, glyph-level spacing, token relationship","reason":"Time + complexity. Patrick: 'can of worms, not opening it now.' Justin flagged icons may reference spacing tokens.","revisit":"Session 2 or after semantics example reviewed."},{"id":"DEF-1-002","session":"S1","topic":"Component layer in practice — examples, anatomy, governance","reason":"Premature until semantic layer draft is defined.","revisit":"Session 3 or when DS-1-006 draft is complete and reviewed."},{"id":"DEF-1-003","session":"S1","topic":"Design ↔ Dev sync session dynamics restructuring","reason":"Not raised in Session 1. Zero context logged.","revisit":"Standalone agenda item — needs a session owner."},{"id":"DEF-3-001","session":"S3","topic":"Cross-platform token automation (Figma ↔ iOS ↔ Android)","reason":"Overhead too high at current stage. DS-3-006.","revisit":"After token layer finalized and at least one component bound and reviewed."},{"id":"DEF-3-002","session":"S3","topic":"Presentation of DS at web app meetup","reason":"Waiting on token layer + typography + foundational elements.","revisit":"When DS-3-007 is closed and token layer is stable."},{"id":"DEF-3-003","session":"S3","topic":"Figma DevConnect / GitLab integration evaluation","reason":"Appears GitHub-only. OPN-3-005.","revisit":"If GitLab-compatible path is identified."}]};
+
+async function loadData() {
+  try {
+    const res = await fetch(REGISTRY_URL);
+    if (!res.ok) throw new Error();
+    DATA = await res.json();
+  } catch(e) {
+    DATA = FALLBACK;
+  }
+  init();
+}
+
+function init() {
+  // Build session filter buttons
+  const sf = document.getElementById('session-filter');
+  DATA.sessions.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = `sess-btn sess-btn-${s.id}`;
+    btn.textContent = `${s.id} · ${s.date.slice(0,7)}`;
+    btn.onclick = () => setSess(s.id);
+    sf.appendChild(btn);
+  });
+  updateCounts();
+  document.getElementById('header-meta').textContent = `v${DATA.meta.version} · ${DATA.meta.lastUpdated} · ${DATA.meta.lastSession}`;
+  render();
+}
+
+function updateCounts() {
+  const f = s => activeSession === 'all' || s === activeSession;
+  document.getElementById('cnt-decisions').textContent = DATA.decisions.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-open').textContent = DATA.openThreads.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-conflicts').textContent = DATA.conflicts.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-assumptions').textContent = DATA.assumptions.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-deferred').textContent = DATA.deferred.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-sessions').textContent = DATA.sessions.length;
+}
+
+function pill(cls, label) { return `<span class="pill pill-${cls}">${label}</span>`; }
+function statusPill(s) {
+  const l={stable:'stable',draft:'draft',unverified:'⚠ unverified',blocked:'blocked',open:'open',unresolved:'unresolved',resolved:'resolved'};
+  return pill(s, l[s]||s);
+}
+function priPill(p) { return pill(p, p); }
+function sessPill(s) { return pill(s, s); }
+
+function makeCard(id, session, primary, secondary, meta1, meta2, expandContent) {
+  const k = id;
+  const exp = expandedCard === k;
+  return `<div class="card" id="card-${k}">
+    <div class="card-header" onclick="toggleCard('${k}')">
+      <div class="card-id">${id}<div class="card-layer" style="margin-top:4px">${secondary||''}</div></div>
+      <div style="padding-top:2px">${sessPill(session)}</div>
+      <div class="card-statement">${primary}</div>
+      <div class="card-meta">${meta1||''}${meta2?'&nbsp;'+meta2:''}</div>
+    </div>
+    ${exp ? `<div class="card-body open">${expandContent}</div>` : ''}
+  </div>`;
+}
+
+function bodyGrid(...pairs) {
+  const rows = pairs.filter(([,v])=>v).map(([l,v])=>`<div class="card-body-label">${l}</div><div class="card-body-val">${v}</div>`).join('');
+  return `<div class="card-body-grid">${rows}</div>`;
+}
+
+function renderDecisions() {
+  let items = DATA.decisions.filter(d=>activeSession==='all'||d.session===activeSession);
+  if (activeFilter!=='all') items = items.filter(d=>d.status===activeFilter);
+
+  const stableCount = items.filter(d=>d.status==='stable').length;
+  const unverCount = items.filter(d=>d.status==='unverified').length;
+
+  const statsRow = `<div class="stats-row">
+    <div class="stat stat-highlight"><div class="stat-num">${items.length}</div><div class="stat-label">decisions shown</div><div class="stat-sub">${activeSession==='all'?'all sessions':activeSession}</div></div>
+    <div class="stat"><div class="stat-num">${stableCount}</div><div class="stat-label">stable</div><div class="stat-sub">locked in</div></div>
+    <div class="stat"><div class="stat-num">${items.filter(d=>d.status==='draft').length}</div><div class="stat-label">draft</div><div class="stat-sub">in progress</div></div>
+    <div class="stat"><div class="stat-num">${unverCount}</div><div class="stat-label">unverified</div><div class="stat-sub">S2 pending</div></div>
+  </div>`;
+
+  const filters = `<div class="filter-row">
+    <span class="filter-label">status /</span>
+    ${['all','stable','draft','unverified','blocked'].map(f=>`<button class="filter-chip${activeFilter===f?' active':''}" onclick="setFilt('${f}')">${f==='all'?'all':f}</button>`).join('')}
+  </div>`;
+
+  if (!items.length) return statsRow + filters + `<div class="empty-state">no decisions match this filter</div>`;
+
+  const cards = items.map(d => makeCard(
+    d.id, d.session, d.statement, d.layer,
+    statusPill(d.status), '',
+    bodyGrid(['context', d.context], ['date', d.date])
+  )).join('');
+
+  return statsRow + filters + `<div class="cards">${cards}</div>`;
+}
+
+function renderOpen() {
+  let items = DATA.openThreads.filter(o=>activeSession==='all'||o.session===activeSession);
+  if (activeFilter!=='all') items = items.filter(o=>o.priority===activeFilter);
+
+  const filters = `<div class="filter-row">
+    <span class="filter-label">priority /</span>
+    ${['all','high','med','low'].map(f=>`<button class="filter-chip${activeFilter===f?' active':''}" onclick="setFilt('${f}')">${f==='all'?'all':f}</button>`).join('')}
+  </div>`;
+
+  const cards = items.map(o => makeCard(
+    o.id, o.session, o.topic, o.layer,
+    priPill(o.priority), statusPill(o.status),
+    bodyGrid(['last position', o.lastPosition], ['needs', o.needs], ['blocks', o.blocks])
+  )).join('');
+
+  return filters + `<div class="cards">${cards||'<div class="empty-state">no open threads</div>'}</div>`;
+}
+
+function renderConflicts() {
+  let items = DATA.conflicts.filter(c=>activeSession==='all'||c.session===activeSession);
+  const cards = items.map(c => makeCard(
+    c.id, c.session, c.topic, '',
+    statusPill(c.resolutionStatus), '',
+    bodyGrid(
+      ['previous', c.previousDecision],
+      ['current', c.currentDirection],
+      ['if keep old', c.implKeepOld],
+      ['if go new', c.implGoNew],
+      ['notes', c.notes]
+    )
+  )).join('');
+  return `<div class="cards">${cards||'<div class="empty-state">no conflicts</div>'}</div>`;
+}
+
+function renderAssumptions() {
+  let items = DATA.assumptions.filter(a=>activeSession==='all'||a.session===activeSession);
+  const cards = items.map(a => makeCard(
+    a.id, a.session, a.statement, '',
+    statusPill(a.status), '',
+    bodyGrid(['risk if wrong', a.risk])
+  )).join('');
+  return `<div class="cards">${cards}</div>`;
+}
+
+function renderDeferred() {
+  let items = DATA.deferred.filter(d=>activeSession==='all'||d.session===activeSession);
+  const cards = items.map(d => makeCard(
+    d.id, d.session, d.topic, '',
+    '', '',
+    bodyGrid(['reason', d.reason], ['revisit when', d.revisit])
+  )).join('');
+  return `<div class="cards">${cards}</div>`;
+}
+
+function renderSessions() {
+  return DATA.sessions.map(s => `
+    <div class="session-card">
+      <div class="session-card-header">
+        ${sessPill(s.id)}
+        <div class="session-card-title">${s.topic}</div>
+        <div class="session-card-date">${s.date}</div>
+      </div>
+      <div class="session-stats">
+        <div class="session-stat"><strong>${s.decisions}</strong> decisions</div>
+        <div class="session-stat"><strong>${s.openThreads}</strong> open</div>
+        <div class="session-stat"><strong>${s.conflicts}</strong> conflicts</div>
+        ${s.assumptions ? `<div class="session-stat"><strong>${s.assumptions}</strong> assumptions</div>` : ''}
+      </div>
+      <div class="session-attendees">${s.attendees.join(' · ')}</div>
+      ${s.notes ? `<div class="session-note">⚠ ${s.notes}</div>` : ''}
+    </div>`).join('');
+}
+
+function render() {
+  document.getElementById('main').innerHTML =
+    `<div class="page-title">${activeTab}${activeSession!=='all'?' / '+activeSession:''}</div>` +
+    ({decisions:renderDecisions,open:renderOpen,conflicts:renderConflicts,assumptions:renderAssumptions,deferred:renderDeferred,sessions:renderSessions}[activeTab]||renderDecisions)();
+  updateCounts();
+}
+
+function toggleCard(k) { expandedCard = expandedCard===k ? null : k; render(); }
+function setFilt(f) { activeFilter=f; expandedCard=null; render(); }
+function setSess(s) {
+  activeSession=s; expandedCard=null; activeFilter='all';
+  document.querySelectorAll('.sess-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sess-btn').forEach(b=
