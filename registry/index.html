@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panda DS — Registry</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1a1a1a;background:#fff}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:0.5px solid #e5e5e5;position:sticky;top:0;background:#fff;z-index:10}
+.top-bar h1{font-size:16px;font-weight:500}
+.top-meta{display:flex;align-items:center;gap:16px}
+.meta{font-size:12px;color:#888}
+.gh-link{font-size:12px;color:#1a1a1a;text-decoration:none;border:0.5px solid #ccc;border-radius:99px;padding:3px 10px}
+.gh-link:hover{background:#f5f5f5}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:1rem 1.25rem}
+.stat-card{background:#f5f5f5;border-radius:8px;padding:0.75rem 1rem}
+.stat-card .label{font-size:11px;color:#888;margin-bottom:4px}
+.stat-card .value{font-size:22px;font-weight:500}
+.stat-card .sub{font-size:11px;color:#aaa;margin-top:2px}
+.tabs{display:flex;border-bottom:0.5px solid #e5e5e5;padding:0 1.25rem;overflow-x:auto}
+.tab{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;color:#888}
+.tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:500}
+.tab-content{padding:1rem 1.25rem}
+table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+th{text-align:left;font-weight:500;font-size:11px;color:#888;padding:6px 8px;border-bottom:0.5px solid #e5e5e5}
+td{padding:7px 8px;border-bottom:0.5px solid #e5e5e5;vertical-align:top;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.expandable:hover{background:#fafafa;cursor:pointer}
+.expand-row td{background:#fafafa;white-space:normal;padding:10px 12px;font-size:12px;color:#555;line-height:1.6}
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500}
+.s-stable{background:#dcfce7;color:#166534}
+.s-draft{background:#fef9c3;color:#854d0e}
+.s-blocked{background:#fee2e2;color:#991b1b}
+.s-tbd{background:#f3f4f6;color:#6b7280;border:0.5px solid #e5e7eb}
+.s-unverified{background:#ede9fe;color:#5b21b6}
+.s-open{background:#dbeafe;color:#1e40af}
+.s-resolved{background:#dcfce7;color:#166534}
+.s-unresolved{background:#fee2e2;color:#991b1b}
+.p-high{background:#fee2e2;color:#991b1b}
+.p-med{background:#fef9c3;color:#854d0e}
+.p-low{background:#dcfce7;color:#166534}
+.sess-S1{background:#dbeafe;color:#1e40af}
+.sess-S2{background:#fce7f3;color:#9d174d}
+.sess-S3{background:#dcfce7;color:#166534}
+.filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.filter-bar span{font-size:12px;color:#888}
+.filter-btn{padding:4px 10px;border:0.5px solid #ccc;border-radius:99px;font-size:11px;cursor:pointer;background:transparent;color:#888}
+.filter-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.empty{text-align:center;padding:2rem;color:#bbb;font-size:13px}
+.notice{background:#fefce8;border:0.5px solid #fef08a;border-radius:8px;padding:8px 12px;font-size:12px;color:#854d0e;margin-bottom:12px}
+.error{background:#fee2e2;border:0.5px solid #fca5a5;border-radius:8px;padding:1rem;font-size:13px;color:#991b1b;margin:1rem 1.25rem}
+.loading{text-align:center;padding:3rem;color:#888;font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>Panda DS — Registry</h1>
+  <div class="top-meta">
+    <span class="meta" id="meta-bar">Loading…</span>
+    <a class="gh-link" href="https://github.com/Boozt-Team-Panda/PandaDS" target="_blank">View on GitHub</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="label">Total decisions</div><div class="value" id="s-dec">—</div><div class="sub" id="s-dec-sub"></div></div>
+  <div class="stat-card"><div class="label">Open threads</div><div class="value" id="s-opn">—</div><div class="sub" id="s-opn-sub"></div></div>
+  <div class="stat-card"><div class="label">Conflicts</div><div class="value" id="s-cfx">—</div><div class="sub" id="s-cfx-sub"></div></div>
+  <div class="stat-card"><div class="label">Sessions logged</div><div class="value" id="s-ses">—</div><div class="sub" id="s-ses-sub"></div></div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="decisions">Decisions</div>
+  <div class="tab" data-tab="open">Open threads</div>
+  <div class="tab" data-tab="conflicts">Conflicts</div>
+  <div class="tab" data-tab="assumptions">Assumptions</div>
+  <div class="tab" data-tab="deferred">Deferred</div>
+  <div class="tab" data-tab="sessions">Sessions</div>
+</div>
+
+<div class="tab-content" id="tab-content"><div class="loading">Loading registry…</div></div>
+
+<script>
+let DATA = null;
+let activeTab = "decisions", expandedRow = null, activeFilter = "all", activeSession = "all";
+
+// Fetch the JSON from the same directory as this HTML file
+async function loadData() {
+  try {
+    const res = await fetch('./panda-registry.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    DATA = await res.json();
+    render();
+  } catch(e) {
+    document.getElementById('tab-content').innerHTML =
+      `<div class="error"><strong>Could not load registry data.</strong><br>
+      Make sure <code>panda-registry.json</code> is in the same folder as this file.<br>
+      If you are opening this directly from your filesystem (file://), you need to serve it via a local server or GitHub Pages.<br><br>
+      Error: ${e.message}</div>`;
+  }
+}
+
+function sPill(s) {
+  const m = {stable:"s-stable",draft:"s-draft",blocked:"s-blocked",tbd:"s-tbd",unverified:"s-unverified",open:"s-open",resolved:"s-resolved",unresolved:"s-unresolved"};
+  const l = {stable:"Stable",draft:"Draft",blocked:"Blocked",tbd:"TBD",unverified:"⚠ Unverified",open:"Open",resolved:"Resolved",unresolved:"Unresolved"};
+  return `<span class="pill ${m[s]||'s-tbd'}">${l[s]||s}</span>`;
+}
+function pPill(p) { const m={high:"p-high",med:"p-med",low:"p-low"}; return `<span class="pill ${m[p]||'s-tbd'}">${p}</span>`; }
+function sessBadge(s) { return `<span class="pill sess-${s}">${s}</span>`; }
+
+function updateStats() {
+  const d = DATA;
+  document.getElementById('meta-bar').textContent = `Last updated: ${d.meta.lastUpdated} · ${d.meta.lastSession} · v${d.meta.version}`;
+  document.getElementById('s-dec').textContent = d.decisions.length;
+  document.getElementById('s-dec-sub').textContent = `${d.decisions.filter(x=>x.status==='stable').length} stable · ${d.decisions.filter(x=>x.status==='unverified').length} unverified`;
+  document.getElementById('s-opn').textContent = d.openThreads.length;
+  document.getElementById('s-opn-sub').textContent = `${d.openThreads.filter(x=>x.priority==='high').length} high priority`;
+  document.getElementById('s-cfx').textContent = d.conflicts.length;
+  document.getElementById('s-cfx-sub').textContent = `${d.conflicts.filter(x=>x.resolutionStatus==='unresolved').length} unresolved`;
+  document.getElementById('s-ses').textContent = d.sessions.length;
+  document.getElementById('s-ses-sub').textContent = d.sessions.map(s=>s.date.slice(0,7)).join(' · ');
+}
+
+function filterBar(statusOptions) {
+  const sessions = ['all', ...DATA.sessions.map(s=>s.id)];
+  return `<div class="filter-bar">
+    <span>Session:</span>
+    ${sessions.map(f=>`<button class="filter-btn${activeSession===f?' active':''}" onclick="setSess('${f}')">${f==='all'?'All':f}</button>`).join('')}
+    ${statusOptions ? `<span style="margin-left:8px">Status:</span>${statusOptions.map(f=>`<button class="filter-btn${activeFilter===f?' active':''}" onclick="setFilt('${f}')">${f==='all'?'All':f.charAt(0).toUpperCase()+f.slice(1)}</button>`).join('')}` : ''}
+  </div>`;
+}
+
+function renderDecisions() {
+  let items = DATA.decisions.filter(d=>activeSession==='all'||d.session===activeSession);
+  if (activeFilter!=='all') items = items.filter(d=>d.status===activeFilter);
+  const rows = items.map(d => {
+    const k='dec-'+d.id, exp=expandedRow===k;
+    return `<tr class="expandable" onclick="toggle('${k}')">
+      <td style="width:95px">${d.id}</td>
+      <td style="width:50px">${sessBadge(d.session)}</td>
+      <td style="width:150px">${d.layer}</td>
+      <td style="white-space:normal">${d.statement}</td>
+      <td style="width:90px">${sPill(d.status)}</td>
+    </tr>${exp?`<tr class="expand-row"><td colspan="5"><strong>Context:</strong> ${d.context||'—'}<br><strong>Date:</strong> ${d.date}</td></tr>`:''}`;
+  }).join('');
+  return filterBar(['all','stable','draft','unverified','blocked']) +
+    `<table><thead><tr>
+      <th style="width:95px">ID</th><th style="width:50px">Sess</th>
+      <th style="width:150px">Layer</th><th>Decision</th><th style="width:90px">Status</th>
+    </tr></thead><tbody>${rows||`<tr><td colspan="5" class="empty">No results</td></tr>`}</tbody></table>`;
+}
+
+function renderOpen() {
+  let items = DATA.openThreads.filter(o=>activeSession==='all'||o.session===activeSession);
+  if (activeFilter!=='all') items = items.filter(o=>o.priority===activeFilter);
+  const rows = items.map(o => {
+    const k='opn-'+o.id, exp=expandedRow===k;
+    return `<tr class="expandable" onclick="toggle('${k}')">
+      <td style="width:95px">${o.id}</td>
+      <td style="width:50px">${sessBadge(o.session)}</td>
+      <td style="white-space:normal;width:200px">${o.topic}</td>
+      <td style="width:65px">${pPill(o.priority)}</td>
+      <td style="width:90px">${sPill(o.status)}</td>
+    </tr>${exp?`<tr class="expand-row"><td colspan="5"><strong>Last position:</strong> ${o.lastPosition}<br><strong>Needs:</strong> ${o.needs}<br><strong>Blocks:</strong> ${o.blocks}</td></tr>`:''}`;
+  }).join('');
+  return filterBar(['all','high','med','low']) +
+    `<table><thead><tr>
+      <th style="width:95px">ID</th><th style="width:50px">Sess</th>
+      <th style="width:200px">Topic</th><th style="width:65px">Priority</th><th style="width:90px">Status</th>
+    </tr></thead><tbody>${rows||`<tr><td colspan="5" class="empty">No results</td></tr>`}</tbody></table>`;
+}
+
+function renderConflicts() {
+  let items = DATA.conflicts.filter(c=>activeSession==='all'||c.session===activeSession);
+  const rows = items.map(c => {
+    const k='cfx-'+c.id, exp=expandedRow===k;
+    return `<tr class="expandable" onclick="toggle('${k}')">
+      <td style="width:95px">${c.id}</td>
+      <td style="width:50px">${sessBadge(c.session)}</td>
+      <td style="white-space:normal">${c.topic}</td>
+      <td style="width:100px">${sPill(c.resolutionStatus)}</td>
+    </tr>${exp?`<tr class="expand-row"><td colspan="4">
+      <strong>Previous:</strong> ${c.previousDecision}<br>
+      <strong>Current:</strong> ${c.currentDirection}<br>
+      <strong>If keep old:</strong> ${c.implKeepOld}<br>
+      <strong>If go new:</strong> ${c.implGoNew}<br>
+      <strong>Notes:</strong> ${c.notes}
+    </td></tr>`:''}`;
+  }).join('');
+  return filterBar() +
+    `<table><thead><tr>
+      <th style="width:95px">ID</th><th style="width:50px">Sess</th>
+      <th>Topic</th><th style="width:100px">Status</th>
+    </tr></thead><tbody>${rows||`<tr><td colspan="4" class="empty">No conflicts</td></tr>`}</tbody></table>`;
+}
+
+function renderAssumptions() {
+  let items = DATA.assumptions.filter(a=>activeSession==='all'||a.session===activeSession);
+  const rows = items.map(a => {
+    const k='asm-'+a.id, exp=expandedRow===k;
+    return `<tr class="expandable" onclick="toggle('${k}')">
+      <td style="width:95px">${a.id}</td>
+      <td style="width:50px">${sessBadge(a.session)}</td>
+      <td style="white-space:normal">${a.statement}</td>
+      <td style="width:65px">${sPill(a.status)}</td>
+    </tr>${exp?`<tr class="expand-row"><td colspan="4"><strong>Risk if wrong:</strong> ${a.risk}</td></tr>`:''}`;
+  }).join('');
+  return filterBar() +
+    `<table><thead><tr>
+      <th style="width:95px">ID</th><th style="width:50px">Sess</th>
+      <th>Assumption</th><th style="width:65px">Status</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderDeferred() {
+  let items = DATA.deferred.filter(d=>activeSession==='all'||d.session===activeSession);
+  const rows = items.map(d => {
+    const k='def-'+d.id, exp=expandedRow===k;
+    return `<tr class="expandable" onclick="toggle('${k}')">
+      <td style="width:95px">${d.id}</td>
+      <td style="width:50px">${sessBadge(d.session)}</td>
+      <td style="white-space:normal">${d.topic}</td>
+      <td style="white-space:normal">${d.revisit}</td>
+    </tr>${exp?`<tr class="expand-row"><td colspan="4"><strong>Reason:</strong> ${d.reason}</td></tr>`:''}`;
+  }).join('');
+  return filterBar() +
+    `<table><thead><tr>
+      <th style="width:95px">ID</th><th style="width:50px">Sess</th>
+      <th>Topic</th><th>Revisit when</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderSessions() {
+  const hasUnverified = DATA.sessions.some(s=>s.notes);
+  const rows = DATA.sessions.map(s => `<tr>
+    <td style="width:50px">${sessBadge(s.id)}</td>
+    <td style="width:105px">${s.date}</td>
+    <td style="white-space:normal">${s.topic}</td>
+    <td style="white-space:normal">${s.attendees.join(', ')}</td>
+    <td style="width:45px;text-align:center">${s.decisions}</td>
+    <td style="width:45px;text-align:center">${s.openThreads}</td>
+    <td style="width:45px;text-align:center">${s.conflicts}</td>
+  </tr>`).join('');
+  return (hasUnverified ? `<div class="notice">S2 attendee list is partial — full record not available. All S2 entries marked ⚠ Unverified until confirmed.</div>` : '') +
+    `<table><thead><tr>
+      <th style="width:50px">Sess</th><th style="width:105px">Date</th>
+      <th>Topic</th><th>Attendees</th>
+      <th style="width:45px;text-align:center">DS-</th>
+      <th style="width:45px;text-align:center">OPN-</th>
+      <th style="width:45px;text-align:center">CFX-</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function render() {
+  updateStats();
+  const map = {decisions:renderDecisions, open:renderOpen, conflicts:renderConflicts, assumptions:renderAssumptions, deferred:renderDeferred, sessions:renderSessions};
+  document.getElementById('tab-content').innerHTML = (map[activeTab]||renderDecisions)();
+}
+
+function toggle(k) { expandedRow = expandedRow===k ? null : k; render(); }
+function setFilt(f) { activeFilter=f; expandedRow=null; render(); }
+function setSess(s) { activeSession=s; expandedRow=null; render(); }
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    activeTab = t.dataset.tab;
+    expandedRow=null; activeFilter='all'; activeSession='all';
+    render();
+  });
+});
+
+loadData();
+</script>
+</body>
+</html>
