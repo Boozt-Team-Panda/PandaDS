@@ -1,147 +1,365 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panda DS Registry</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f7f6f3;--surface:#ffffff;--border:#e2e0da;--border-strong:#c8c5bc;--text-primary:#1a1917;--text-secondary:#6b6860;--text-tertiary:#9c9a95;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--sidebar-w:220px;--header-h:56px}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg);font-family:var(--sans);color:var(--text-primary);font-size:13px}
-.layout{display:grid;grid-template-columns:var(--sidebar-w) 1fr;grid-template-rows:var(--header-h) 1fr;height:100vh;overflow:hidden}
-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;border-bottom:1px solid var(--border);background:var(--surface);z-index:20}
-.header-left{display:flex;align-items:center;gap:1rem}
-.wordmark{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:0.04em}
-.wordmark span{color:var(--text-tertiary)}
-.header-stats{display:flex;gap:1.5rem}
-.hstat{display:flex;flex-direction:column;align-items:flex-end}
-.hstat-val{font-family:var(--mono);font-size:15px;font-weight:500;line-height:1}
-.hstat-label{font-size:10px;color:var(--text-tertiary);margin-top:2px;letter-spacing:0.06em;text-transform:uppercase}
-.gh-btn{font-family:var(--mono);font-size:11px;color:var(--text-secondary);text-decoration:none;border:1px solid var(--border-strong);border-radius:3px;padding:4px 10px}
-.gh-btn:hover{background:var(--bg)}
-.updated{font-size:11px;color:var(--text-tertiary);font-family:var(--mono)}
-aside{border-right:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:1rem 0}
-.nav-section{margin-bottom:1.5rem}
-.nav-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-tertiary);padding:0 1rem;margin-bottom:0.5rem;font-family:var(--mono)}
-.nav-item{display:flex;align-items:center;justify-content:space-between;padding:6px 1rem;cursor:pointer;border-left:2px solid transparent;transition:all 0.1s}
-.nav-item:hover{background:var(--bg)}
-.nav-item.active{border-left-color:var(--text-primary);background:var(--bg)}
-.nav-item.active .nav-item-label{font-weight:500;color:var(--text-primary)}
-.nav-item-label{color:var(--text-secondary);font-size:12px}
-.nav-item-count{font-family:var(--mono);font-size:11px;color:var(--text-tertiary);background:var(--bg);border:1px solid var(--border);border-radius:2px;padding:1px 5px;min-width:24px;text-align:center}
-.nav-item.active .nav-item-count{background:var(--text-primary);color:#fff;border-color:var(--text-primary)}
-.session-dot{width:7px;height:7px;border-radius:50%;margin-right:8px;flex-shrink:0}
-main{overflow-y:auto;background:var(--bg)}
-.main-inner{padding:1.5rem;max-width:1100px}
-.page-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
-.page-title{font-size:18px;font-weight:600;letter-spacing:-0.02em}
-.page-subtitle{font-size:12px;color:var(--text-tertiary);font-family:var(--mono)}
-.filter-row{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
-.filter-label{font-size:11px;color:var(--text-tertiary);font-family:var(--mono);margin-right:2px}
-.fbtn{font-size:11px;font-family:var(--mono);padding:3px 9px;border:1px solid var(--border);border-radius:2px;cursor:pointer;background:var(--surface);color:var(--text-secondary);transition:all 0.1s}
-.fbtn:hover{border-color:var(--border-strong)}
-.fbtn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary)}
-.filter-sep{width:1px;height:16px;background:var(--border);margin:0 4px;align-self:center}
-.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-thead{border-bottom:1px solid var(--border);background:var(--bg)}
-th{text-align:left;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-tertiary);padding:8px 12px;font-family:var(--mono);font-weight:400}
-td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
-tr:last-child td{border-bottom:none}
-tr.row-main:hover{background:#fafaf8;cursor:pointer}
-tr.row-expand td{background:#fafaf8;padding:10px 12px 14px;border-bottom:1px solid var(--border)}
-.expand-body{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.expand-field{display:flex;flex-direction:column;gap:3px}
-.expand-field.full{grid-column:1/-1}
-.expand-key{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-tertiary);font-family:var(--mono)}
-.expand-val{font-size:12px;color:var(--text-secondary);line-height:1.5}
-.id-chip{font-family:var(--mono);font-size:11px;font-weight:500;white-space:nowrap;letter-spacing:0.02em}
-.sbadge{display:inline-flex;align-items:center;font-family:var(--mono);font-size:10px;font-weight:500;padding:2px 6px;border-radius:2px;white-space:nowrap}
-.status{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:2px;letter-spacing:0.04em;font-weight:500;white-space:nowrap}
-.st-stable{background:#dcfce7;color:#15803d}
-.st-draft{background:#fef9c3;color:#a16207}
-.st-blocked{background:#fee2e2;color:#b91c1c}
-.st-unverified{background:#ede9fe;color:#6d28d9}
-.st-tbd{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb}
-.st-open{background:#dbeafe;color:#1d4ed8}
-.st-unresolved{background:#fee2e2;color:#b91c1c}
-.st-resolved{background:#dcfce7;color:#15803d}
-.pri{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:2px;font-weight:500}
-.pr-high{background:#fee2e2;color:#b91c1c}
-.pr-med{background:#fef9c3;color:#a16207}
-.pr-low{background:#f3f4f6;color:#6b7280}
-.stmt{color:var(--text-primary);line-height:1.5;white-space:normal}
-.layer-tag{font-size:10px;font-family:var(--mono);color:var(--text-tertiary);margin-top:2px}
-.empty-state{text-align:center;padding:3rem;color:var(--text-tertiary);font-family:var(--mono);font-size:12px}
-.sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.session-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem}
-.sc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.75rem}
-.sc-id{font-family:var(--mono);font-size:22px;font-weight:300}
-.sc-date{font-family:var(--mono);font-size:11px;color:var(--text-tertiary)}
-.sc-topic{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:0.75rem}
-.sc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.5rem}
-.sc-stat{display:flex;flex-direction:column;gap:2px}
-.sc-stat-val{font-family:var(--mono);font-size:16px;font-weight:500}
-.sc-stat-key{font-size:10px;color:var(--text-tertiary);letter-spacing:0.06em;text-transform:uppercase}
-.sc-attendees{font-size:11px;color:var(--text-secondary);line-height:1.5}
-.notice{background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:8px 12px;font-size:11px;color:#92400e;margin-bottom:12px;font-family:var(--mono)}
-.error-box{background:#fee2e2;border:1px solid #fca5a5;border-radius:4px;padding:1rem;font-size:12px;color:#991b1b;margin:1rem}
-.loading{display:flex;align-items:center;justify-content:center;height:200px;font-family:var(--mono);font-size:12px;color:var(--text-tertiary)}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:99px}
+:root {
+  --black: #0f0f0f;
+  --white: #fafaf8;
+  --gray-50: #f5f5f3;
+  --gray-100: #ebebea;
+  --gray-200: #d6d6d4;
+  --gray-400: #9e9e9b;
+  --gray-600: #5c5c5a;
+  --gray-800: #2a2a28;
+  --accent: #e8ff47;
+  --accent-dark: #c8df00;
+  --s1: #bfdbfe;
+  --s1-text: #1e3a5f;
+  --s2: #fce7f3;
+  --s2-text: #6b1a3a;
+  --s3: #d1fae5;
+  --s3-text: #064e2e;
+  --stable: #d1fae5; --stable-t: #064e2e;
+  --draft: #fef9c3; --draft-t: #713f12;
+  --unverified: #ede9fe; --unverified-t: #3b0764;
+  --blocked: #fee2e2; --blocked-t: #7f1d1d;
+  --high: #fee2e2; --high-t: #7f1d1d;
+  --med: #fef9c3; --med-t: #713f12;
+  --low: #d1fae5; --low-t: #064e2e;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--gray-50); color: var(--black); min-height: 100vh; }
+
+/* LAYOUT */
+.shell { display: grid; grid-template-columns: 220px 1fr; grid-template-rows: auto 1fr; min-height: 100vh; }
+.header { grid-column: 1 / -1; background: var(--black); color: var(--white); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.header-left { display: flex; align-items: center; gap: 16px; }
+.logo { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--white); }
+.logo span { color: var(--accent); }
+.header-meta { font-family: var(--font-mono); font-size: 11px; color: var(--gray-400); }
+.gh-btn { font-family: var(--font-mono); font-size: 11px; color: var(--gray-400); text-decoration: none; border: 0.5px solid var(--gray-600); border-radius: 3px; padding: 4px 10px; transition: all 0.15s; }
+.gh-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* SIDEBAR */
+.sidebar { background: var(--black); color: var(--white); padding: 20px 0; border-right: 0px; display: flex; flex-direction: column; gap: 0; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar-section { padding: 0 0 16px; }
+.sidebar-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: var(--gray-600); padding: 0 20px 8px; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 20px; cursor: pointer; font-size: 13px; color: var(--gray-400); transition: all 0.1s; border-left: 2px solid transparent; }
+.nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+.nav-item.active { color: var(--white); border-left-color: var(--accent); background: rgba(232,255,71,0.06); }
+.nav-count { font-family: var(--font-mono); font-size: 10px; color: var(--gray-600); background: var(--gray-800); padding: 1px 6px; border-radius: 99px; }
+.nav-item.active .nav-count { background: rgba(232,255,71,0.15); color: var(--accent); }
+.sidebar-divider { height: 0.5px; background: var(--gray-800); margin: 8px 20px 16px; }
+.session-filter { padding: 0 20px; display: flex; flex-direction: column; gap: 4px; }
+.sess-btn { font-family: var(--font-mono); font-size: 11px; padding: 5px 10px; border-radius: 4px; cursor: pointer; border: 0.5px solid transparent; text-align: left; transition: all 0.1s; }
+.sess-btn-all { color: var(--gray-400); background: transparent; border-color: var(--gray-800); }
+.sess-btn-all:hover, .sess-btn-all.active { color: var(--white); border-color: var(--gray-600); background: var(--gray-800); }
+.sess-btn-S1 { color: var(--s1-text); background: rgba(191,219,254,0.12); border-color: rgba(191,219,254,0.2); }
+.sess-btn-S1:hover, .sess-btn-S1.active { background: rgba(191,219,254,0.25); border-color: var(--s1); }
+.sess-btn-S2 { color: #f9a8d4; background: rgba(252,231,243,0.08); border-color: rgba(252,231,243,0.15); }
+.sess-btn-S2:hover, .sess-btn-S2.active { background: rgba(252,231,243,0.18); border-color: #f9a8d4; }
+.sess-btn-S3 { color: #6ee7b7; background: rgba(209,250,229,0.08); border-color: rgba(209,250,229,0.15); }
+.sess-btn-S3:hover, .sess-btn-S3.active { background: rgba(209,250,229,0.18); border-color: #6ee7b7; }
+
+/* MAIN */
+.main { padding: 28px 32px; overflow-y: auto; }
+.page-title { font-size: 11px; font-family: var(--font-mono); color: var(--gray-400); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+
+/* STATS ROW */
+.stats-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 28px; }
+.stat { background: var(--white); border: 0.5px solid var(--gray-200); border-radius: 8px; padding: 16px 20px; }
+.stat-num { font-size: 28px; font-weight: 300; font-family: var(--font-mono); line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--gray-400); }
+.stat-sub { font-size: 10px; font-family: var(--font-mono); color: var(--gray-400); margin-top: 6px; }
+.stat-highlight { background: var(--black); color: var(--white); }
+.stat-highlight .stat-label { color: var(--gray-400); }
+.stat-highlight .stat-sub { color: var(--gray-600); }
+.stat-highlight .stat-num { color: var(--accent); }
+
+/* CARDS */
+.cards { display: flex; flex-direction: column; gap: 1px; }
+.card { background: var(--white); border: 0.5px solid var(--gray-200); border-radius: 6px; overflow: hidden; transition: border-color 0.15s; margin-bottom: 1px; }
+.card:hover { border-color: var(--gray-400); }
+.card-header { display: grid; grid-template-columns: 100px 52px 1fr auto; gap: 12px; align-items: start; padding: 14px 16px; cursor: pointer; }
+.card-id { font-family: var(--font-mono); font-size: 11px; color: var(--gray-600); font-weight: 500; padding-top: 1px; }
+.card-statement { font-size: 13px; line-height: 1.5; font-weight: 400; }
+.card-meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.card-body { padding: 0 16px 14px 164px; border-top: 0.5px solid var(--gray-100); margin-top: 2px; padding-top: 12px; display: none; }
+.card-body.open { display: block; }
+.card-body-grid { display: grid; grid-template-columns: 100px 1fr; gap: 6px 12px; font-size: 12px; }
+.card-body-label { color: var(--gray-400); font-family: var(--font-mono); font-size: 10px; padding-top: 1px; }
+.card-body-val { color: var(--gray-800); line-height: 1.5; }
+.card-layer { font-size: 11px; color: var(--gray-600); margin-top: 2px; }
+.card-expand-hint { font-family: var(--font-mono); font-size: 10px; color: var(--gray-400); margin-top: 10px; }
+
+/* PILLS */
+.pill { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.pill-stable { background: var(--stable); color: var(--stable-t); }
+.pill-draft { background: var(--draft); color: var(--draft-t); }
+.pill-unverified { background: var(--unverified); color: var(--unverified-t); }
+.pill-blocked { background: var(--blocked); color: var(--blocked-t); }
+.pill-unresolved { background: var(--blocked); color: var(--blocked-t); }
+.pill-resolved { background: var(--stable); color: var(--stable-t); }
+.pill-open { background: var(--gray-100); color: var(--gray-600); }
+.pill-high { background: var(--high); color: var(--high-t); }
+.pill-med { background: var(--med); color: var(--med-t); }
+.pill-low { background: var(--low); color: var(--low-t); }
+.pill-S1 { background: var(--s1); color: var(--s1-text); }
+.pill-S2 { background: var(--s2); color: var(--s2-text); }
+.pill-S3 { background: var(--s3); color: var(--s3-text); }
+
+/* FILTER BAR */
+.filter-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.filter-label { font-size: 11px; color: var(--gray-400); font-family: var(--font-mono); }
+.filter-chip { font-family: var(--font-mono); font-size: 10px; padding: 3px 10px; border: 0.5px solid var(--gray-200); border-radius: 3px; cursor: pointer; background: var(--white); color: var(--gray-600); transition: all 0.1s; }
+.filter-chip:hover { border-color: var(--gray-400); color: var(--black); }
+.filter-chip.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+/* EMPTY + LOADING */
+.empty-state { text-align: center; padding: 48px; color: var(--gray-400); font-size: 13px; font-family: var(--font-mono); }
+.loading { text-align: center; padding: 48px; color: var(--gray-400); font-size: 13px; }
+
+/* SESSIONS VIEW */
+.session-card { background: var(--white); border: 0.5px solid var(--gray-200); border-radius: 8px; padding: 20px 24px; margin-bottom: 8px; }
+.session-card-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.session-card-title { font-size: 15px; font-weight: 500; }
+.session-card-date { font-family: var(--font-mono); font-size: 11px; color: var(--gray-400); }
+.session-stats { display: flex; gap: 16px; margin-bottom: 10px; }
+.session-stat { font-family: var(--font-mono); font-size: 11px; color: var(--gray-600); }
+.session-stat strong { color: var(--black); }
+.session-attendees { font-size: 12px; color: var(--gray-600); line-height: 1.6; }
+.session-note { font-size: 11px; color: #92400e; background: #fef9c3; border-radius: 4px; padding: 6px 10px; margin-top: 8px; font-family: var(--font-mono); }
+
+/* NOTICE */
+.notice { background: #fefce8; border: 0.5px solid #fef08a; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #854d0e; margin-bottom: 16px; font-family: var(--font-mono); }
 </style>
 </head>
 <body>
-<div class="layout">
-  <header>
+
+<div class="shell">
+  <header class="header">
     <div class="header-left">
-      <div class="wordmark">PANDA<span>/</span>DS <span>·</span> Registry</div>
-      <span class="updated" id="h-updated">—</span>
+      <div class="logo">PANDA<span>·</span>DS <span style="color:var(--gray-600);margin-left:4px">/ registry</span></div>
+      <div class="header-meta" id="header-meta">—</div>
     </div>
-    <div class="header-stats" id="h-stats"></div>
-    <a class="gh-btn" href="https://github.com/Boozt-Team-Panda/PandaDS" target="_blank">↗ GitHub</a>
+    <a class="gh-btn" href="https://github.com/Boozt-Team-Panda/PandaDS" target="_blank">↗ github</a>
   </header>
-  <aside>
-    <div class="nav-section">
-      <div class="nav-label">Views</div>
-      <div class="nav-item active" data-tab="decisions" onclick="switchTab(this)"><span class="nav-item-label">Decisions</span><span class="nav-item-count" id="nc-decisions">—</span></div>
-      <div class="nav-item" data-tab="open" onclick="switchTab(this)"><span class="nav-item-label">Open threads</span><span class="nav-item-count" id="nc-open">—</span></div>
-      <div class="nav-item" data-tab="conflicts" onclick="switchTab(this)"><span class="nav-item-label">Conflicts</span><span class="nav-item-count" id="nc-conflicts">—</span></div>
-      <div class="nav-item" data-tab="assumptions" onclick="switchTab(this)"><span class="nav-item-label">Assumptions</span><span class="nav-item-count" id="nc-assumptions">—</span></div>
-      <div class="nav-item" data-tab="deferred" onclick="switchTab(this)"><span class="nav-item-label">Deferred</span><span class="nav-item-count" id="nc-deferred">—</span></div>
-      <div class="nav-item" data-tab="sessions" onclick="switchTab(this)"><span class="nav-item-label">Sessions</span><span class="nav-item-count" id="nc-sessions">—</span></div>
+
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+      <div class="nav-item active" data-tab="decisions">Decisions <span class="nav-count" id="cnt-decisions">—</span></div>
+      <div class="nav-item" data-tab="open">Open threads <span class="nav-count" id="cnt-open">—</span></div>
+      <div class="nav-item" data-tab="conflicts">Conflicts <span class="nav-count" id="cnt-conflicts">—</span></div>
+      <div class="nav-item" data-tab="assumptions">Assumptions <span class="nav-count" id="cnt-assumptions">—</span></div>
+      <div class="nav-item" data-tab="deferred">Deferred <span class="nav-count" id="cnt-deferred">—</span></div>
+      <div class="nav-item" data-tab="sessions">Sessions <span class="nav-count" id="cnt-sessions">—</span></div>
     </div>
-    <div class="nav-section" id="session-nav"><div class="nav-label">Sessions</div></div>
-  </aside>
-  <main><div class="main-inner" id="main-content"><div class="loading">Loading registry…</div></div></main>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Filter by session</div>
+      <div class="session-filter" id="session-filter">
+        <button class="sess-btn sess-btn-all active" onclick="setSess('all')">All sessions</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main" id="main">
+    <div class="loading">Loading registry…</div>
+  </main>
 </div>
+
 <script>
-let D=null,activeTab='decisions',expandedRow=null,filterSession='all',filterStatus='all';
-function sessColor(id){const p={S1:'#3b82f6',S2:'#ec4899',S3:'#22c55e'};if(p[id])return p[id];const h=[280,40,180,320,60,200,0,120,260];const i=parseInt(id.replace('S',''),10)-1;return`hsl(${h[i%h.length]},65%,45%)`}
-async function init(){try{const r=await fetch('./panda-registry.json');if(!r.ok)throw new Error(`HTTP ${r.status}`);D=await r.json();}catch(e){document.getElementById('main-content').innerHTML=`<div class="error-box"><strong>Could not load panda-registry.json</strong><br>Ensure it is in the same folder and served via a web server (not file://).<br><br>Error: ${e.message}</div>`;return;}bootstrap();}
-function bootstrap(){buildNav();updateCounts();updateHeader();renderTab();}
-function buildNav(){const nav=document.getElementById('session-nav');D.sessions.forEach(s=>{const col=sessColor(s.id);const d=document.createElement('div');d.className='nav-item';d.style.cursor='default';d.innerHTML=`<div style="display:flex;align-items:center"><div class="session-dot" style="background:${col}"></div><span class="nav-item-label" style="font-size:11px">${s.id} · ${String(s.date).slice(0,7)}</span></div><span class="nav-item-count" style="font-size:10px">${s.decisions}</span>`;nav.appendChild(d);});}
-function updateCounts(){['decisions','open','conflicts','assumptions','deferred','sessions'].forEach(k=>{const map={decisions:D.decisions,open:D.openThreads,conflicts:D.conflicts,assumptions:D.assumptions,deferred:D.deferred,sessions:D.sessions};document.getElementById('nc-'+k).textContent=map[k].length;});}
-function updateHeader(){document.getElementById('h-updated').textContent=`v${D.meta.version} · ${D.meta.lastUpdated}`;const stable=D.decisions.filter(d=>d.status==='stable').length;const highOpn=D.openThreads.filter(o=>o.priority==='high').length;const unres=D.conflicts.filter(c=>c.resolutionStatus==='unresolved').length;document.getElementById('h-stats').innerHTML=`<div class="hstat"><div class="hstat-val">${D.decisions.length}</div><div class="hstat-label">Decisions</div></div><div class="hstat"><div class="hstat-val">${stable}</div><div class="hstat-label">Stable</div></div><div class="hstat"><div class="hstat-val">${highOpn}</div><div class="hstat-label">High OPN</div></div><div class="hstat"><div class="hstat-val">${unres}</div><div class="hstat-label">Conflicts</div></div>`;}
-function switchTab(el){document.querySelectorAll('.nav-item[data-tab]').forEach(x=>x.classList.remove('active'));el.classList.add('active');activeTab=el.dataset.tab;expandedRow=null;filterSession='all';filterStatus='all';renderTab();}
-function renderTab(){const map={decisions:renderDecisions,open:renderOpen,conflicts:renderConflicts,assumptions:renderAssumptions,deferred:renderDeferred,sessions:renderSessions};document.getElementById('main-content').innerHTML=(map[activeTab]||renderDecisions)();}
-function sb(s){const col=sessColor(s);const r=parseInt(col.slice(1,3)||'60',16);const light=`hsl(${hueFromColor(col)},80%,93%)`;const dark=`hsl(${hueFromColor(col)},60%,30%)`;return`<span class="sbadge" style="background:${light};color:${dark}">${s}</span>`;}
-function hueFromColor(c){if(c.startsWith('hsl'))return c.match(/\d+/)[0];const map={'#3b82f6':217,'#ec4899':330,'#22c55e':142};return map[c]||180;}
-function stB(s){const l={stable:'Stable',draft:'Draft',blocked:'Blocked',unverified:'⚠ Unverified',tbd:'TBD',open:'Open',unresolved:'Unresolved',resolved:'Resolved'};return`<span class="status st-${s}">${l[s]||s}</span>`;}
-function priB(p){return`<span class="pri pr-${p}">${p}</span>`;}
-function fBar(opts){const sess=['all',...D.sessions.map(s=>s.id)];return`<div class="filter-row"><span class="filter-label">session</span>${sess.map(s=>`<button class="fbtn${filterSession===s?' active':''}" onclick="setFS('${s}')">${s==='all'?'All':s}</button>`).join('')}${opts?`<div class="filter-sep"></div><span class="filter-label">status</span>${opts.map(s=>`<button class="fbtn${filterStatus===s?' active':''}" onclick="setFSt('${s}')">${s==='all'?'All':s}</button>`).join('')}`:''}</div>`;}
-function setFS(s){filterSession=s;expandedRow=null;renderTab();}
-function setFSt(s){filterStatus=s;expandedRow=null;renderTab();}
-function tog(k){expandedRow=expandedRow===k?null:k;renderTab();}
-function renderDecisions(){let items=D.decisions.filter(d=>filterSession==='all'||d.session===filterSession);if(filterStatus!=='all')items=items.filter(d=>d.status===filterStatus);const rows=items.map(d=>{const k='d'+d.id,exp=expandedRow===k;return`<tr class="row-main" onclick="tog('${k}')"><td style="width:105px"><span class="id-chip">${d.id}</span></td><td style="width:52px">${sb(d.session)}</td><td><div class="stmt">${d.statement}</div><div class="layer-tag">${d.layer}</div></td><td style="width:100px;text-align:right">${stB(d.status)}</td></tr>${exp?`<tr class="row-expand"><td colspan="4"><div class="expand-body"><div class="expand-field full"><div class="expand-key">Context</div><div class="expand-val">${d.context||'—'}</div></div><div class="expand-field"><div class="expand-key">Date</div><div class="expand-val">${d.date}</div></div><div class="expand-field"><div class="expand-key">Layer</div><div class="expand-val">${d.layer}</div></div></div></td></tr>`:''}`}).join('');return`<div class="page-header"><div><div class="page-title">Decisions</div><div class="page-subtitle">${items.length} of ${D.decisions.length} entries</div></div></div>${fBar(['all','stable','draft','unverified','blocked'])}<div class="tbl-wrap"><table><thead><tr><th style="width:105px">ID</th><th style="width:52px">Sess</th><th>Statement</th><th style="width:100px;text-align:right">Status</th></tr></thead><tbody>${rows||`<tr><td colspan="4" class="empty-state">No results</td></tr>`}</tbody></table></div>`;}
-function renderOpen(){let items=D.openThreads.filter(o=>filterSession==='all'||o.session===filterSession);if(filterStatus!=='all')items=items.filter(o=>o.priority===filterStatus);const rows=items.map(o=>{const k='o'+o.id,exp=expandedRow===k;return`<tr class="row-main" onclick="tog('${k}')"><td style="width:105px"><span class="id-chip">${o.id}</span></td><td style="width:52px">${sb(o.session)}</td><td><div class="stmt">${o.topic}</div><div class="layer-tag">${o.layer}</div></td><td style="width:70px">${priB(o.priority)}</td><td style="width:80px;text-align:right">${stB(o.status)}</td></tr>${exp?`<tr class="row-expand"><td colspan="5"><div class="expand-body"><div class="expand-field full"><div class="expand-key">Last position</div><div class="expand-val">${o.lastPosition}</div></div><div class="expand-field full"><div class="expand-key">Needs</div><div class="expand-val">${o.needs}</div></div><div class="expand-field"><div class="expand-key">Blocks</div><div class="expand-val">${o.blocks}</div></div></div></td></tr>`:''}`}).join('');return`<div class="page-header"><div><div class="page-title">Open threads</div><div class="page-subtitle">${items.length} of ${D.openThreads.length} entries</div></div></div>${fBar(['all','high','med','low'])}<div class="tbl-wrap"><table><thead><tr><th style="width:105px">ID</th><th style="width:52px">Sess</th><th>Topic</th><th style="width:70px">Priority</th><th style="width:80px;text-align:right">Status</th></tr></thead><tbody>${rows||`<tr><td colspan="5" class="empty-state">No results</td></tr>`}</tbody></table></div>`;}
-function renderConflicts(){let items=D.conflicts.filter(c=>filterSession==='all'||c.session===filterSession);const rows=items.map(c=>{const k='c'+c.id,exp=expandedRow===k;return`<tr class="row-main" onclick="tog('${k}')"><td style="width:105px"><span class="id-chip">${c.id}</span></td><td style="width:52px">${sb(c.session)}</td><td><div class="stmt">${c.topic}</div></td><td style="width:110px;text-align:right">${stB(c.resolutionStatus)}</td></tr>${exp?`<tr class="row-expand"><td colspan="4"><div class="expand-body"><div class="expand-field full"><div class="expand-key">Previous decision</div><div class="expand-val">${c.previousDecision}</div></div><div class="expand-field full"><div class="expand-key">Current direction</div><div class="expand-val">${c.currentDirection}</div></div><div class="expand-field"><div class="expand-key">If keep old</div><div class="expand-val">${c.implKeepOld}</div></div><div class="expand-field"><div class="expand-key">If go new</div><div class="expand-val">${c.implGoNew}</div></div><div class="expand-field full"><div class="expand-key">Notes</div><div class="expand-val">${c.notes}</div></div></div></td></tr>`:''}`}).join('');return`<div class="page-header"><div><div class="page-title">Conflicts</div><div class="page-subtitle">${items.length} of ${D.conflicts.length} entries</div></div></div>${fBar()}<div class="tbl-wrap"><table><thead><tr><th style="width:105px">ID</th><th style="width:52px">Sess</th><th>Topic</th><th style="width:110px;text-align:right">Status</th></tr></thead><tbody>${rows||`<tr><td colspan="4" class="empty-state">No conflicts on record</td></tr>`}</tbody></table></div>`;}
-function renderAssumptions(){let items=D.assumptions.filter(a=>filterSession==='all'||a.session===filterSession);const rows=items.map(a=>{const k='a'+a.id,exp=expandedRow===k;return`<tr class="row-main" onclick="tog('${k}')"><td style="width:105px"><span class="id-chip">${a.id}</span></td><td style="width:52px">${sb(a.session)}</td><td><div class="stmt">${a.statement}</div></td><td style="width:80px;text-align:right">${stB(a.status)}</td></tr>${exp?`<tr class="row-expand"><td colspan="4"><div class="expand-body"><div class="expand-field full"><div class="expand-key">Risk if wrong</div><div class="expand-val">${a.risk}</div></div></div></td></tr>`:''}`}).join('');return`<div class="page-header"><div><div class="page-title">Assumptions</div><div class="page-subtitle">${items.length} of ${D.assumptions.length} entries</div></div></div>${fBar()}<div class="tbl-wrap"><table><thead><tr><th style="width:105px">ID</th><th style="width:52px">Sess</th><th>Statement</th><th style="width:80px;text-align:right">Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
-function renderDeferred(){let items=D.deferred.filter(d=>filterSession==='all'||d.session===filterSession);const rows=items.map(d=>{const k='df'+d.id,exp=expandedRow===k;return`<tr class="row-main" onclick="tog('${k}')"><td style="width:105px"><span class="id-chip">${d.id}</span></td><td style="width:52px">${sb(d.session)}</td><td><div class="stmt">${d.topic}</div></td><td style="white-space:normal"><div class="expand-val">${d.revisit}</div></td></tr>${exp?`<tr class="row-expand"><td colspan="4"><div class="expand-body"><div class="expand-field full"><div class="expand-key">Reason</div><div class="expand-val">${d.reason}</div></div></div></td></tr>`:''}`}).join('');return`<div class="page-header"><div><div class="page-title">Deferred</div><div class="page-subtitle">${items.length} of ${D.deferred.length} entries</div></div></div>${fBar()}<div class="tbl-wrap"><table><thead><tr><th style="width:105px">ID</th><th style="width:52px">Sess</th><th>Topic</th><th>Revisit when</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
-function renderSessions(){const hasN=D.sessions.some(s=>s.notes);const cards=D.sessions.map(s=>{const col=sessColor(s.id);return`<div class="session-card" style="border-top:3px solid ${col}"><div class="sc-header"><div class="sc-id" style="color:${col}">${s.id}</div><div class="sc-date">${s.date}</div></div><div class="sc-topic">${s.topic}</div><div class="sc-attendees">${s.attendees.join(', ')}${s.notes?` <span style="color:#a16207">· ${s.notes}</span>`:''}</div><div class="sc-stats"><div class="sc-stat"><div class="sc-stat-val">${s.decisions}</div><div class="sc-stat-key">Decisions</div></div><div class="sc-stat"><div class="sc-stat-val">${s.openThreads}</div><div class="sc-stat-key">Open</div></div><div class="sc-stat"><div class="sc-stat-val">${s.conflicts}</div><div class="sc-stat-key">Conflicts</div></div></div></div>`}).join('');return`<div class="page-header"><div><div class="page-title">Sessions</div><div class="page-subtitle">${D.sessions.length} sessions on record</div></div></div>${hasN?`<div class="notice">S2 attendee list is partial — full record not available. All S2 entries marked ⚠ Unverified until confirmed.</div>`:''}<div class="sessions-grid">${cards}</div>`;}
-init();
-</script>
-</body>
-</html>
+const REGISTRY_URL = './panda-registry.json';
+let DATA = null;
+let activeTab = 'decisions', activeSession = 'all', activeFilter = 'all', expandedCard = null;
+
+// --- EMBEDDED FALLBACK DATA (same as panda-registry.json) ---
+const FALLBACK = {"meta":{"project":"Panda DS","organization":"Boozt","repo":"https://github.com/Boozt-Team-Panda/PandaDS","lastUpdated":"2026-03-17","lastSession":"S3","totalSessions":3,"version":"1.0.0"},"sessions":[{"id":"S1","date":"2026-01-27","topic":"Spacing token architecture — layer model definition","attendees":["Patrick Ahrentløv","Facundo Mau","Justin Daneman","Daniel Wennberg","Rasmus Sander Larsen","Danas Paulikas","Frederik Røssell","Marco Magrini","Lasse Lind Dencker Sørensen"],"decisions":7,"openThreads":5,"conflicts":1,"assumptions":4,"deferred":3},{"id":"S2","date":"2026-02","topic":"Token continuation — primitives, semantic model, export script","attendees":["Facundo Mau","Justin Daneman"],"notes":"Partial attendee list — Daniel and Rasmus not present. Full record unverified.","decisions":4,"openThreads":4,"conflicts":1,"assumptions":0,"deferred":0},{"id":"S3","date":"2026-03-13","topic":"Governance restructure & roadmap reset","attendees":["Facundo Mau","Justin Daneman","Daniel Wennberg","Patrick Ahrentløv"],"decisions":12,"openThreads":5,"conflicts":0,"assumptions":3,"deferred":3}],"decisions":[{"id":"DS-1-001","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"Panda adopts a three-layer spacing token system: primitive (reference), semantic (system), and component.","context":"Mirrors color token structure. Enables mode nesting per platform, theme, and accessibility without combinatorial explosion.","status":"stable"},{"id":"DS-1-002","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"The four-point grid is confirmed as the base unit for spacing (not eight-point).","context":"","status":"stable"},{"id":"DS-1-003","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"The semantic layer is the primary design layer. Component tokens are allowed only for platform-specific exceptions, not as a general override mechanism.","context":"Patrick's KISS position — component layer is a possibility, not a default.","status":"stable"},{"id":"DS-1-004","session":"S1","date":"2026-01-27","layer":"Tokens — Process","statement":"The semantic layer must remain finite and automated. Changes require cross-platform agreement via Slack or MR approval.","context":"","status":"stable"},{"id":"DS-1-005","session":"S1","date":"2026-01-27","layer":"Tokens — Naming","statement":"Shared vocabulary confirmed: 'reference' = primitive layer, 'system' = semantic layer, 'component' = component layer.","context":"Proposed by Rasmus, confirmed by Facundo. All attendees aligned.","status":"stable"},{"id":"DS-1-006","session":"S1","date":"2026-01-27","layer":"Tokens — Process","statement":"Facundo and Justin will draft spacing token suggestions. iOS, Android, and web will each propose naming conventions. A common pattern will be extracted.","context":"","status":"stable"},{"id":"DS-1-007","session":"S1","date":"2026-01-27","layer":"Tokens — Spacing","statement":"Four semantic spacing categories in scope: inset, stack, inline, and gutter. Names not locked — pending cross-platform input per DS-1-006.","context":"","status":"draft"},{"id":"DS-2-001","session":"S2","date":"2026-02","layer":"Tokens — Spacing","statement":"Primitive token set defined and reviewed against scaled-up page examples (PDP, app, web).","context":"⚠️ Reconstructed from session summary — verify against full S2 record.","status":"unverified"},{"id":"DS-2-002","session":"S2","date":"2026-02","layer":"Tokens — Architecture","statement":"Semantic layer = brands. Component layer = platforms. Cleaner mental model than Session 1 framing.","context":"Significant architectural decision — Facundo ratification required. ⚠️ Reconstructed.","status":"unverified"},{"id":"DS-2-003","session":"S2","date":"2026-02","layer":"Tokens — Process","statement":"Export script defined as required tooling for token delivery. Owner not yet assigned.","context":"⚠️ Reconstructed — verify full detail against S2 record.","status":"unverified"},{"id":"DS-2-004","session":"S2","date":"2026-02","layer":"Tokens — Spacing","statement":"Value 44 status (spacing, size, or component token) discussed but not resolved.","context":"⚠️ Reconstructed — classification of 44 still open as OPN-2-003.","status":"unverified"},{"id":"DS-3-001","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"The design system is treated as a design artifact first — design advances components without waiting for development sign-off.","context":"Progress stalled requiring cross-team consensus. Design holds veto on system decisions.","status":"stable"},{"id":"DS-3-002","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"Design holds explicit veto power on design system decisions.","context":"Developers remain to flag technical gaps but design decides.","status":"stable"},{"id":"DS-3-003","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"Sync meetings reduced to one representative per team plus Facundo. Patrick steps down; Daniel Wennberg remains as iOS rep.","context":"Too many voices caused stalls. Pruned as of this session.","status":"stable"},{"id":"DS-3-004","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"A formal decision log is introduced to prevent reopening or overlapping past decisions.","context":"Without a log, same discussions recurred with no retained resolution.","status":"stable"},{"id":"DS-3-005","session":"S3","date":"2026-03-13","layer":"Tokens — Spacing","statement":"The four-point grid mandate is reconfirmed. All spacing decisions follow it going forward.","context":"Restatement of DS-1-002 as a formal design veto decision.","status":"stable"},{"id":"DS-3-006","session":"S3","date":"2026-03-13","layer":"Tokens — Process","statement":"Cross-platform token connection (Figma ↔ iOS ↔ Android automation) is temporarily deprioritized.","context":"Overhead too high at current stage. Primitive layer stable enough to proceed.","status":"draft"},{"id":"DS-3-007","session":"S3","date":"2026-03-13","layer":"Tokens","statement":"Immediate focus: finalize token layer — spacing, sizing, stroke width, and other numeric/string values.","context":"Once tokens are finalized, component work expected to accelerate.","status":"draft"},{"id":"DS-3-008","session":"S3","date":"2026-03-13","layer":"Process / Tooling","statement":"The Claude project (panda-ds) is the official tool for sessions, decision log, and registry. Design = editor, developers = viewers/commenters.","context":"Explicitly confirmed in session.","status":"stable"},{"id":"DS-3-009","session":"S3","date":"2026-03-13","layer":"Process / Governance","statement":"Sync meetings continue bi-weekly. Meeting and channel ownership transfers to design team (Facundo).","context":"","status":"stable"},{"id":"DS-3-010","session":"S3","date":"2026-03-13","layer":"Components → Tokens","statement":"Component workflow: finalize tokens → bind component to tokens → design review → hand off to development.","context":"Prevents token decisions from being deferred until after component design.","status":"stable"},{"id":"DS-3-011","session":"S3","date":"2026-03-13","layer":"Process / Adoption","statement":"New components are planned as OKR candidates. Dev spends one OKR cycle implementing and fully adopting a component across all apps.","context":"OKRs are a planning vehicle, not a time constraint.","status":"stable"},{"id":"DS-3-012","session":"S3","date":"2026-03-13","layer":"Process / Tooling","statement":"Figma versioning (Ready for Development frame saves a diffable version) must be actively communicated to all developers.","context":"Knowledge gap — developers were not using this feature.","status":"draft"}],"openThreads":[{"id":"OPN-1-001","session":"S1","topic":"Naming convention for four semantic spacing token types","lastPosition":"Each platform to propose preferred names. UX to declare token count first.","needs":"Written platform proposals in Slack + UX draft shared first.","layer":"Tokens — Naming","priority":"high","blocks":"DS-1-007","status":"open"},{"id":"OPN-1-002","session":"S1","topic":"Ownership of component token creation","lastPosition":"Facundo: UX leads. Rasmus: substantial workload if UX fully owns three platforms.","needs":"Explicit ownership model before component layer work begins.","layer":"Tokens — Process","priority":"med","blocks":"Component layer work","status":"open"},{"id":"OPN-1-003","session":"S1","topic":"Tooling and automation for semantic layer","lastPosition":"Patrick: mandatory. No tool, pipeline, or ownership proposed.","needs":"Concrete tooling proposal — who builds it, what pipeline, what triggers MR.","layer":"Tokens — Process","priority":"high","blocks":"DS-1-004 execution","status":"open"},{"id":"OPN-1-004","session":"S1","topic":"Actual token count per platform unknown","lastPosition":"Daniel: 'we don't know if you want 5 tokens or 50 tokens.'","needs":"Platforms to provide current usage scope before UX draft is finalized.","layer":"Tokens — Spacing","priority":"med","blocks":"DS-1-006 scope","status":"open"},{"id":"OPN-1-005","session":"S1","topic":"Design ↔ Dev sync session structure and dynamics","lastPosition":"Not raised in Session 1. No decision on record.","needs":"Dedicated session or agenda item. Session owner needed.","layer":"Process / Governance","priority":"high","blocks":"Cross-discipline communication as Panda scales","status":"open"},{"id":"OPN-2-001","session":"S2","topic":"Primitive set validation — include/exclude value 128","lastPosition":"Reviewed against page examples. Final call not logged. ⚠️ Reconstructed.","needs":"Full S2 record verification.","layer":"Tokens — Spacing","priority":"high","blocks":"DS-2-001 lock","status":"open"},{"id":"OPN-2-002","session":"S2","topic":"DS-2-002 ratification by Facundo","lastPosition":"Semantic=brands / component=platforms model. Facundo sign-off needed.","needs":"Explicit ratification before architectural model is locked.","layer":"Tokens — Architecture","priority":"high","blocks":"DS-2-002","status":"open"},{"id":"OPN-2-003","session":"S2","topic":"Value 44 — spacing, size, or component token?","lastPosition":"Discussed, not resolved.","needs":"Design decision on classification.","layer":"Tokens — Spacing","priority":"med","blocks":"Token finalization","status":"open"},{"id":"OPN-2-004","session":"S2","topic":"Export script — owner not assigned","lastPosition":"Flagged across S1 and S2. Still nobody assigned.","needs":"Named owner from dev side.","layer":"Process / Tooling","priority":"high","blocks":"Token delivery pipeline","status":"open"},{"id":"OPN-3-001","session":"S3","topic":"Minimum sizing values undefined","lastPosition":"One of two remaining hard questions after tokens are finalized.","needs":"Working session between Facundo and Justin once sizing tokens are further along.","layer":"Tokens","priority":"high","blocks":"DS-3-007","status":"open"},{"id":"OPN-3-002","session":"S3","topic":"Icon handling strategy undefined","lastPosition":"Flagged alongside minimum sizing as the other major open question.","needs":"Design decision on how icons map to token/component layer across platforms.","layer":"Components","priority":"high","blocks":"DS-3-010","status":"open"},{"id":"OPN-3-003","session":"S3","topic":"Brand change integration process (e.g. Outlet Nation)","lastPosition":"Upcoming real-world case. No design exists yet.","needs":"Process decision: token override? theme layer? per-component?","layer":"Tokens / Components","priority":"low","blocks":"—","status":"open"},{"id":"OPN-3-004","session":"S3","topic":"Android representative vacant","lastPosition":"Lasse stepping back, looking for replacement.","needs":"Lasse to identify and onboard replacement.","layer":"Process","priority":"med","blocks":"—","status":"open"},{"id":"OPN-3-005","session":"S3","topic":"DevConnect / Figma-to-GitLab integration","lastPosition":"Interesting but appears GitHub-only.","needs":"Verify if DevConnect supports GitLab or alternative exists.","layer":"Process / Tooling","priority":"low","blocks":"—","status":"open"}],"conflicts":[{"id":"CFX-1-001","session":"S1","topic":"Semantic layer blast radius","previousDecision":"Daniel: semantic layer reintroduces blast radius — shared tokens mean nobody changes them, same paralysis as today.","currentDirection":"Facundo + Patrick: component layer contains blast radius. Semantic stays clean if exceptions go to component tokens.","implKeepOld":"Semantic layer freezes in practice. Workarounds accumulate at component level anyway.","implGoNew":"Semantic layer stays clean and finite. Component exceptions stay scoped.","resolutionStatus":"unresolved","notes":"Daniel said 'let's go' but framed it as predicting what happens in a year — not a retraction. Must be validated with a live primitives+semantic example.","sessionResolved":null},{"id":"CFX-2-001","session":"S2","topic":"DS-2-002 naming sign-off — Daniel and Rasmus not present","previousDecision":"DS-1-006: naming process requires cross-platform input from iOS, Android, and web.","currentDirection":"DS-2-002 token names agreed in S2 without Daniel and Rasmus present. ⚠️ Reconstructed.","implKeepOld":"DS-2-002 names may need to be reopened if Daniel/Rasmus object.","implGoNew":"Names proceed as agreed — teams accept outcome of smaller session.","resolutionStatus":"unresolved","notes":"Needs explicit confirmation from Daniel and Rasmus before DS-2-002 is marked stable.","sessionResolved":null}],"assumptions":[{"id":"ASM-1-001","session":"S1","statement":"The semantic layer will remain small and stable once established, rarely requiring changes.","risk":"Automation breaks; governance overhead grows; platform adoption stalls.","status":"open"},{"id":"ASM-1-002","session":"S1","statement":"Component tokens will be needed for only a small minority of exceptions (~0.5% per Rasmus's reference).","risk":"Component layer grows uncontrollably, reproducing the complexity it was meant to isolate.","status":"open"},{"id":"ASM-1-003","session":"S1","statement":"Typography token mode-switching can serve as the working template for spacing token mode behavior.","risk":"Spacing modes behave differently — analogy breaks, layer model needs structural revision.","status":"open"},{"id":"ASM-1-004","session":"S1","statement":"Tablet breakpoint support can be deferred without structural consequences.","risk":"Adding tablet later may require token renames or additional layer abstraction.","status":"open"},{"id":"ASM-3-001","session":"S3","statement":"Once the token layer is finalized, component work will accelerate rapidly.","risk":"Token finalization may reveal additional unresolved questions (OPN-3-001, OPN-3-002) that re-introduce delays.","status":"open"},{"id":"ASM-3-002","session":"S3","statement":"The primitive token layer will not change significantly after being locked.","risk":"Any change cascades into semantic and component tokens, invalidating downstream work.","status":"open"},{"id":"ASM-3-003","session":"S3","statement":"Existing components can be retrofitted to the four-point grid without major rework.","risk":"Some components may require more effort, particularly where no Figma source exists (e.g. onboarding).","status":"open"}],"deferred":[{"id":"DEF-1-001","session":"S1","topic":"Icons — internal spacing, glyph-level spacing, token relationship","reason":"Time + complexity. Patrick: 'can of worms, not opening it now.' Justin flagged icons may reference spacing tokens.","revisit":"Session 2 or after semantics example reviewed."},{"id":"DEF-1-002","session":"S1","topic":"Component layer in practice — examples, anatomy, governance","reason":"Premature until semantic layer draft is defined.","revisit":"Session 3 or when DS-1-006 draft is complete and reviewed."},{"id":"DEF-1-003","session":"S1","topic":"Design ↔ Dev sync session dynamics restructuring","reason":"Not raised in Session 1. Zero context logged.","revisit":"Standalone agenda item — needs a session owner."},{"id":"DEF-3-001","session":"S3","topic":"Cross-platform token automation (Figma ↔ iOS ↔ Android)","reason":"Overhead too high at current stage. DS-3-006.","revisit":"After token layer finalized and at least one component bound and reviewed."},{"id":"DEF-3-002","session":"S3","topic":"Presentation of DS at web app meetup","reason":"Waiting on token layer + typography + foundational elements.","revisit":"When DS-3-007 is closed and token layer is stable."},{"id":"DEF-3-003","session":"S3","topic":"Figma DevConnect / GitLab integration evaluation","reason":"Appears GitHub-only. OPN-3-005.","revisit":"If GitLab-compatible path is identified."}]};
+
+async function loadData() {
+  try {
+    const res = await fetch(REGISTRY_URL);
+    if (!res.ok) throw new Error();
+    DATA = await res.json();
+  } catch(e) {
+    DATA = FALLBACK;
+  }
+  init();
+}
+
+function init() {
+  // Build session filter buttons
+  const sf = document.getElementById('session-filter');
+  DATA.sessions.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = `sess-btn sess-btn-${s.id}`;
+    btn.textContent = `${s.id} · ${s.date.slice(0,7)}`;
+    btn.onclick = () => setSess(s.id);
+    sf.appendChild(btn);
+  });
+  updateCounts();
+  document.getElementById('header-meta').textContent = `v${DATA.meta.version} · ${DATA.meta.lastUpdated} · ${DATA.meta.lastSession}`;
+  render();
+}
+
+function updateCounts() {
+  const f = s => activeSession === 'all' || s === activeSession;
+  document.getElementById('cnt-decisions').textContent = DATA.decisions.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-open').textContent = DATA.openThreads.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-conflicts').textContent = DATA.conflicts.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-assumptions').textContent = DATA.assumptions.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-deferred').textContent = DATA.deferred.filter(d=>f(d.session)).length;
+  document.getElementById('cnt-sessions').textContent = DATA.sessions.length;
+}
+
+function pill(cls, label) { return `<span class="pill pill-${cls}">${label}</span>`; }
+function statusPill(s) {
+  const l={stable:'stable',draft:'draft',unverified:'⚠ unverified',blocked:'blocked',open:'open',unresolved:'unresolved',resolved:'resolved'};
+  return pill(s, l[s]||s);
+}
+function priPill(p) { return pill(p, p); }
+function sessPill(s) { return pill(s, s); }
+
+function makeCard(id, session, primary, secondary, meta1, meta2, expandContent) {
+  const k = id;
+  const exp = expandedCard === k;
+  return `<div class="card" id="card-${k}">
+    <div class="card-header" onclick="toggleCard('${k}')">
+      <div class="card-id">${id}<div class="card-layer" style="margin-top:4px">${secondary||''}</div></div>
+      <div style="padding-top:2px">${sessPill(session)}</div>
+      <div class="card-statement">${primary}</div>
+      <div class="card-meta">${meta1||''}${meta2?'&nbsp;'+meta2:''}</div>
+    </div>
+    ${exp ? `<div class="card-body open">${expandContent}</div>` : ''}
+  </div>`;
+}
+
+function bodyGrid(...pairs) {
+  const rows = pairs.filter(([,v])=>v).map(([l,v])=>`<div class="card-body-label">${l}</div><div class="card-body-val">${v}</div>`).join('');
+  return `<div class="card-body-grid">${rows}</div>`;
+}
+
+function renderDecisions() {
+  let items = DATA.decisions.filter(d=>activeSession==='all'||d.session===activeSession);
+  if (activeFilter!=='all') items = items.filter(d=>d.status===activeFilter);
+
+  const stableCount = items.filter(d=>d.status==='stable').length;
+  const unverCount = items.filter(d=>d.status==='unverified').length;
+
+  const statsRow = `<div class="stats-row">
+    <div class="stat stat-highlight"><div class="stat-num">${items.length}</div><div class="stat-label">decisions shown</div><div class="stat-sub">${activeSession==='all'?'all sessions':activeSession}</div></div>
+    <div class="stat"><div class="stat-num">${stableCount}</div><div class="stat-label">stable</div><div class="stat-sub">locked in</div></div>
+    <div class="stat"><div class="stat-num">${items.filter(d=>d.status==='draft').length}</div><div class="stat-label">draft</div><div class="stat-sub">in progress</div></div>
+    <div class="stat"><div class="stat-num">${unverCount}</div><div class="stat-label">unverified</div><div class="stat-sub">S2 pending</div></div>
+  </div>`;
+
+  const filters = `<div class="filter-row">
+    <span class="filter-label">status /</span>
+    ${['all','stable','draft','unverified','blocked'].map(f=>`<button class="filter-chip${activeFilter===f?' active':''}" onclick="setFilt('${f}')">${f==='all'?'all':f}</button>`).join('')}
+  </div>`;
+
+  if (!items.length) return statsRow + filters + `<div class="empty-state">no decisions match this filter</div>`;
+
+  const cards = items.map(d => makeCard(
+    d.id, d.session, d.statement, d.layer,
+    statusPill(d.status), '',
+    bodyGrid(['context', d.context], ['date', d.date])
+  )).join('');
+
+  return statsRow + filters + `<div class="cards">${cards}</div>`;
+}
+
+function renderOpen() {
+  let items = DATA.openThreads.filter(o=>activeSession==='all'||o.session===activeSession);
+  if (activeFilter!=='all') items = items.filter(o=>o.priority===activeFilter);
+
+  const filters = `<div class="filter-row">
+    <span class="filter-label">priority /</span>
+    ${['all','high','med','low'].map(f=>`<button class="filter-chip${activeFilter===f?' active':''}" onclick="setFilt('${f}')">${f==='all'?'all':f}</button>`).join('')}
+  </div>`;
+
+  const cards = items.map(o => makeCard(
+    o.id, o.session, o.topic, o.layer,
+    priPill(o.priority), statusPill(o.status),
+    bodyGrid(['last position', o.lastPosition], ['needs', o.needs], ['blocks', o.blocks])
+  )).join('');
+
+  return filters + `<div class="cards">${cards||'<div class="empty-state">no open threads</div>'}</div>`;
+}
+
+function renderConflicts() {
+  let items = DATA.conflicts.filter(c=>activeSession==='all'||c.session===activeSession);
+  const cards = items.map(c => makeCard(
+    c.id, c.session, c.topic, '',
+    statusPill(c.resolutionStatus), '',
+    bodyGrid(
+      ['previous', c.previousDecision],
+      ['current', c.currentDirection],
+      ['if keep old', c.implKeepOld],
+      ['if go new', c.implGoNew],
+      ['notes', c.notes]
+    )
+  )).join('');
+  return `<div class="cards">${cards||'<div class="empty-state">no conflicts</div>'}</div>`;
+}
+
+function renderAssumptions() {
+  let items = DATA.assumptions.filter(a=>activeSession==='all'||a.session===activeSession);
+  const cards = items.map(a => makeCard(
+    a.id, a.session, a.statement, '',
+    statusPill(a.status), '',
+    bodyGrid(['risk if wrong', a.risk])
+  )).join('');
+  return `<div class="cards">${cards}</div>`;
+}
+
+function renderDeferred() {
+  let items = DATA.deferred.filter(d=>activeSession==='all'||d.session===activeSession);
+  const cards = items.map(d => makeCard(
+    d.id, d.session, d.topic, '',
+    '', '',
+    bodyGrid(['reason', d.reason], ['revisit when', d.revisit])
+  )).join('');
+  return `<div class="cards">${cards}</div>`;
+}
+
+function renderSessions() {
+  return DATA.sessions.map(s => `
+    <div class="session-card">
+      <div class="session-card-header">
+        ${sessPill(s.id)}
+        <div class="session-card-title">${s.topic}</div>
+        <div class="session-card-date">${s.date}</div>
+      </div>
+      <div class="session-stats">
+        <div class="session-stat"><strong>${s.decisions}</strong> decisions</div>
+        <div class="session-stat"><strong>${s.openThreads}</strong> open</div>
+        <div class="session-stat"><strong>${s.conflicts}</strong> conflicts</div>
+        ${s.assumptions ? `<div class="session-stat"><strong>${s.assumptions}</strong> assumptions</div>` : ''}
+      </div>
+      <div class="session-attendees">${s.attendees.join(' · ')}</div>
+      ${s.notes ? `<div class="session-note">⚠ ${s.notes}</div>` : ''}
+    </div>`).join('');
+}
+
+function render() {
+  document.getElementById('main').innerHTML =
+    `<div class="page-title">${activeTab}${activeSession!=='all'?' / '+activeSession:''}</div>` +
+    ({decisions:renderDecisions,open:renderOpen,conflicts:renderConflicts,assumptions:renderAssumptions,deferred:renderDeferred,sessions:renderSessions}[activeTab]||renderDecisions)();
+  updateCounts();
+}
+
+function toggleCard(k) { expandedCard = expandedCard===k ? null : k; render(); }
+function setFilt(f) { activeFilter=f; expandedCard=null; render(); }
+function setSess(s) {
+  activeSession=s; expandedCard=null; activeFilter='all';
+  document.querySelectorAll('.sess-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sess-btn').forEach(b=
