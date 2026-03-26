@@ -1,214 +1,53 @@
-# CLAUDE.md — Panda Design System
-# Entry point for Claude Code. Read this before doing anything in this repo.
+# CLAUDE.md — Instructions for Claude Code
+
+Read `PANDA_DS_PROJECT.md` first. It has the full project context: architecture,
+team, milestones, session types, ID conventions, and priority algorithm.
+This file only covers what Claude needs to operate in this repo.
 
 ---
 
-## What this repo is
-
-This is the source of truth for **Panda**, Boozt's internal design system.
-It stores every decision, open thread, conflict, assumption, and token spec
-produced in team sessions. It is read by designers, developers, iOS, Android,
-and web — all of them, without needing to ask anyone for the current state.
-
-**If a decision is undocumented here, it doesn't exist.**
-
-**Repository:** https://github.com/Boozt-Team-Panda/PandaDS
-**Registry viewer:** GitHub Pages (auto-served from `/registry/index.html`)
-**Registry file:** `registry/panda-registry.json`
-
----
-
-## Team
-
-| Role | Person |
-|------|--------|
-| Design leads (PD) | Facundo Mau + Justin Daneman |
-| Web | Danas Paulikas |
-| iOS | Daniel Wennberg (active) · Patrick Ahrentløv (stepped back) |
-| Android | Rasmus Sander Larsen (active) · Lasse Dencker Sørensen (stepped back) |
-
-Design holds veto on design system decisions (DS-3-002).
-Sync meetings are bi-weekly, owned by Facundo (DS-3-009).
-
----
-
-## Repo structure
+## Repo map
 
 ```
-PandaDS/
-├── CLAUDE.md                        ← you are here
-├── PANDA_DS_PROJECT.md              ← stable project reference
-├── registry/
-│   ├── panda-registry.json          ← the brain. all decisions live here.
-│   └── index.html                   ← GitHub Pages viewer
-└── skills/
-    ├── ds-roadmap.md                ← north star: milestones + priority algorithm
-    ├── panda-ds.md                  ← system vocabulary + layer definitions
-    ├── session-engine.md            ← processes transcripts into decisions
-    ├── pre-session-planner.md       ← builds session agendas from the backlog
-    ├── registry-analyst.md          ← reasons over the registry (health, critical path)
-    └── spec-writer.md               ← converts decisions into token/component specs
+CLAUDE.md                        ← you are here
+PANDA_DS_PROJECT.md              ← project reference (read first)
+registry/
+  panda-registry.json            ← the source of truth. all decisions live here.
+  index.html                     ← GitHub Pages viewer
+skills/
+  ds-roadmap.md                  ← load before any other skill
+  session-engine.md              ← process transcripts
+  pre-session-planner.md         ← build session agendas
+  registry-analyst.md            ← reason over the registry
+  spec-writer.md                 ← write token and component specs
+  panda-ds.md                    ← system vocabulary and layer definitions
 ```
 
 ---
 
-## The system architecture
+## Which skill to load when
 
-Four layers, bottom to top. Never skip layers. When in doubt, go lower.
+Always load `skills/ds-roadmap.md` first. Then:
 
-```
-Tokens → Components → Patterns → Templates
-```
-
-### Token tiers
-
-```
-Primitive   →  raw values. Never consumed directly by platform teams.
-Semantic    →  brand aliases. One set per brand (Boozt vs Outlet Nation).
-                This is the brand differentiation layer.
-Component   →  platform-level exceptions only. Not a general override.
-```
-
-Platform teams consume **semantic tokens**, never primitives.
-The semantic layer is what makes Boozt and Outlet Nation visually different
-while sharing the same component library.
-
-### Platform targets
-
-| Platform | Paradigm | Key constraint |
-|----------|----------|----------------|
-| Web desktop | CSS Grid / Flexbox | Fluid + breakpoints |
-| Web mobile | CSS Flexbox | Touch targets, thumb zones |
-| iOS | UIKit / SwiftUI | Safe areas, native nav, HIG compliance |
-| Android | Jetpack Compose | Material You baseline, adaptive layout |
-
-Panda is Figma-native and platform-agnostic. Source of truth is always Figma.
-Never default to web-only output.
+| Task | Skill |
+|------|-------|
+| Processing a meeting transcript | `session-engine.md` |
+| Processing a design-only session (Facu + Justin) | `session-engine.md` with `--design` flag |
+| Building the agenda for the next session | `pre-session-planner.md` |
+| Health check, critical path, what's blocking us | `registry-analyst.md` |
+| Writing a token or component spec from a DS- decision | `spec-writer.md` |
+| Any question about layers, tokens, or platform rules | `panda-ds.md` |
 
 ---
 
-## Milestone plan
+## How to update the registry
 
-Milestones are hard-gated. No milestone begins until the prior one is complete.
+1. Process the transcript → `session-engine` produces a JSON patch
+2. Merge the patch arrays into `registry/panda-registry.json`
+3. Update `meta.lastSession`, `meta.lastUpdated`, `meta.totalSessions`
+4. Commit and push — GitHub Pages updates automatically
 
-| Milestone | Scope | Status |
-|-----------|-------|--------|
-| **M1 — Foundation** | All token categories defined. Primitive locked. Semantic ratified. Export pipeline with named owner. | 🟡 In progress |
-| **M2 — Core components** | Button, Input, Card, Navigation, Toast, Modal, Badge | 🔒 Blocked on M1 |
-| **M3 — Commerce patterns** | ProductCard, PriceBlock, AddToCart, FilterBar, ImageGallery | 🔒 Blocked on M2 |
-| **M4 — Page templates** | PLP, PDP, Cart, Checkout, Account, Search results | 🔒 Blocked on M3 |
-
-**Foundation is not complete until:**
-- All primitive token categories have at least `draft` status on Web
-- Semantic layer convention ratified by all platform reps (OPN-2-002)
-- Export script has a named owner (OPN-2-004)
-- Minimum sizing values agreed (OPN-3-001)
-- Icon strategy decided (DEF-1-001)
-
----
-
-## Registry structure
-
-`registry/panda-registry.json` is the single source of truth.
-Schema version: `2.0.0`
-
-Top-level keys:
-
-| Key | What it holds |
-|-----|---------------|
-| `meta` | Schema version, last session, last updated |
-| `sessions` | One entry per session (cross-functional and design) |
-| `decisions` | All DS- ratified decisions |
-| `openThreads` | All OPN- items, open and resolved |
-| `conflicts` | All CFX- items |
-| `assumptions` | All ASM- items |
-| `deferred` | All DEF- items |
-| `designSystem` | Token specs (TOK-), component specs (CMP-), patterns (PAT-), templates (TPL-) |
-
-Proposals (PRO-) and explorations (EXP-) from design sessions live under a
-`proposals` key (added once the first design session is processed).
-
----
-
-## ID conventions
-
-IDs are **permanent**. Never reuse or reassign.
-
-```
-DS-{N}-{NNN}    Ratified decision          e.g. DS-4-001
-PRO-{N}-{NNN}   Design proposal (staging)  e.g. PRO-5-001
-EXP-{N}-{NNN}   Design exploration         e.g. EXP-5-001
-OPN-{N}-{NNN}   Open thread                e.g. OPN-2-002
-CFX-{N}-{NNN}   Conflict                   e.g. CFX-3-001
-ASM-{N}-{NNN}   Assumption                 e.g. ASM-2-001
-DEF-{N}-{NNN}   Deferred item              e.g. DEF-1-001
-TOK-{NNN}       Token spec                 e.g. TOK-001
-CMP-{NNN}       Component spec             e.g. CMP-001
-PAT-{NNN}       Pattern spec               e.g. PAT-001
-TPL-{NNN}       Template spec              e.g. TPL-001
-```
-
-`{N}` = session number. `{NNN}` starts at 001 per session.
-Design and cross-functional sessions share the same counter.
-
----
-
-## Session types
-
-### Cross-functional sessions
-**Who:** Facu + Justin + platform reps (Web, iOS, Android)
-**Produces:** DS- decisions · OPN- threads · CFX- conflicts
-**Skill:** `session-engine` (default mode)
-
-### Design sessions
-**Who:** Facu + Justin only
-**Produces:** PRO- proposals · EXP- explorations (no DS- decisions)
-**Skill:** `session-engine --design`
-
-### Proposal pipeline
-
-```
-Design session → PRO- (status: proposed)
-    ↓  pre-session-planner checks readiness: ready
-Dev session agenda
-    ↓  session-engine ratifies
-DS- decision created · PRO- status → ratified · PRO-.promotedTo = DS-N-NNN
-```
-
-A PRO- reaches the dev agenda only when:
-1. `readiness: "ready"` (not `needs-context`)
-2. No active CFX- exists against it
-3. Its layer is within the current milestone scope
-
----
-
-## Priority algorithm
-
-Apply in this order when deciding what to work on:
-
-1. Unresolved CFX- — block everything downstream
-2. Foundation blockers — OPN- or DEF- preventing M1 from closing
-3. PRO- items ready for ratification
-4. OPN- older than 2 sessions
-5. OPN- from most recent session
-6. At-risk ASM-
-7. DEF- and low-priority OPN-
-
----
-
-## Skills
-
-Skills are the operating instructions for each workflow. They live in `skills/`.
-**Always load `ds-roadmap` before running any other skill.**
-
-| Skill file | When to use |
-|-----------|-------------|
-| `skills/ds-roadmap.md` | North star — milestones, priority, brand token strategy. Load first. |
-| `skills/panda-ds.md` | System vocabulary, layer definitions, platform philosophy |
-| `skills/session-engine.md` | Processing a meeting transcript → decisions + JSON patch |
-| `skills/pre-session-planner.md` | Building a session agenda from the registry backlog |
-| `skills/registry-analyst.md` | Health check, critical path, delta between sessions, readiness |
-| `skills/spec-writer.md` | Converting a DS- decision into a token/component spec |
+Never edit `panda-registry.json` manually except to apply a Claude-produced patch.
 
 ---
 
@@ -216,7 +55,7 @@ Skills are the operating instructions for each workflow. They live in `skills/`.
 
 ```
 feat(registry): add S4 — spacing semantic layer ratification
-feat(registry): add S5 — design — color exploration
+feat(registry): add S5 — design — color token exploration
 fix(registry): correct DS-3-006 status to stable
 feat(specs): add TOK-015 spacing.semantic.inset
 feat(viewer): update index.html navigation
@@ -224,24 +63,10 @@ feat(viewer): update index.html navigation
 
 ---
 
-## How to update the registry
-
-After processing a session:
-
-1. Claude produces a JSON patch (Output B from `session-engine`)
-2. Merge the patch arrays into `registry/panda-registry.json`
-3. Update `meta.lastSession`, `meta.lastUpdated`, `meta.totalSessions`
-4. Commit with the convention above
-5. Push — GitHub Pages auto-updates the viewer
-
-Never edit `panda-registry.json` manually except to apply a Claude-produced patch.
-
----
-
-## Rules that never change
+## Hard rules
 
 - Never invent a token name. Use `[token.name.TBD]` and flag it.
 - Never skip layers. A component is not a pattern.
-- Never mark a decision `stable` if it hasn't been agreed by all relevant parties.
+- Never mark a decision `stable` unless all relevant parties have agreed.
 - Never resolve a CFX- unilaterally. Surface it, let the team decide.
 - If it's undocumented, it doesn't exist.
