@@ -1,64 +1,60 @@
-# PANDA_DS_PROJECT.md
 # Panda Design System — Project Overview
 
----
+This is the stable human reference for Panda. It describes what the system is,
+who is involved, and how the team works.
 
-## HOW TO USE THIS FILE
-
-This is a stable reference document. It describes what Panda is, how it is
-structured, who is involved, and how the team works. It does not track
-current state, decisions, or open threads — those live in panda-registry.json.
-
-Read this file to stay oriented to the plan. Use the registry for current state.
+It does not track current state — that lives in `registry/panda-registry.json`.
+It does not describe tooling or Claude workflows — that lives in `CLAUDE.md`.
 
 ---
 
-## 1. PROJECT IDENTITY
+## Project identity
 
 **Name:** Panda
 **Owner:** Boozt Fashion AB
-**Leads:** Facundo Mau + Justin Daneman (design)
-**Purpose:** Single source of truth for design decisions across Web, iOS,
-and Android. Serves two brands: Boozt and Boozt Outlet (Outlet Nation).
+**Leads:** Facundo Mau + Justin Daneman
+**Purpose:** Single source of truth for design decisions across Web, iOS, and Android.
+Serves two brands: Boozt and Boozt Outlet (Outlet Nation).
 
-**North star goal:** Team transparency and synchronization across design
-and development. If a decision is undocumented, it doesn't exist.
+**North star:** Team transparency and synchronization. If a decision is undocumented, it doesn't exist.
 
-**Repository:** github.com/Boozt-Team-Panda/PandaDS
-**Registry file:** registry/panda-registry.json
-**Registry viewer:** GitHub Pages (hosted from repo)
-
-**Team:**
-- Design (PD): Facundo Mau, Justin Daneman
-- Web: Danas Paulikas
-- iOS: Patrick Ahrentløv (senior / team lead — pulled out), Daniel Wennberg (active)
-- Android: Lasse Dencker Sørensen (senior / team lead — pulled out), Rasmus Sander Larsen (active)
+**Registry viewer:** https://boozt-team-panda.github.io/PandaDS
 
 ---
 
-## 2. SYSTEM ARCHITECTURE
+## Team
 
-### Four layers (bottom to top)
+| Role | Person | Status |
+|------|--------|--------|
+| Design lead | Facundo Mau | Active |
+| Design lead | Justin Daneman | Active |
+| Web | Danas Paulikas | Active |
+| iOS | Daniel Wennberg | Active |
+| iOS | Patrick Ahrentløv | Stepped back |
+| Android | Rasmus Sander Larsen | Active |
+| Android | Lasse Dencker Sørensen | Stepped back |
+
+Design holds veto on design system decisions. Sync meetings are bi-weekly, owned by Facundo.
+
+---
+
+## System architecture
+
+Four layers, bottom to top. Never skip layers. When a decision belongs between two layers, assign it to the lower one.
 
 ```
 Tokens → Components → Patterns → Templates
 ```
 
-Every decision traces to a token. Never skip layers.
-When a decision belongs between two layers, assign it to the lower one.
-
-### Token architecture (three tiers)
+### Token tiers
 
 ```
-Primitive  →  raw values, never aliased directly by consumers
-Semantic   →  brand-level aliases (one set per brand — drives Boozt vs Outlet split)
-Component  →  platform-level exceptions only
+Primitive   raw values. Never consumed directly by platform teams.
+Semantic    brand-level aliases. One set per brand. This is where Boozt and Outlet Nation diverge.
+Component   platform-level exceptions only. Not a general override mechanism.
 ```
 
-The semantic layer is the brand differentiation layer. Outlet Nation requires
-a distinct set of semantic aliases from Boozt. Every token decision must
-support this split cleanly. Platform teams consume semantic tokens — never
-primitives directly.
+Platform teams consume **semantic tokens**, never primitives directly.
 
 ### Platform targets
 
@@ -69,77 +65,60 @@ primitives directly.
 | iOS | UIKit / SwiftUI | Safe areas, native nav, HIG compliance |
 | Android | Jetpack Compose | Material You baseline, adaptive layout |
 
-Panda is Figma-native and platform-agnostic. The source of truth is always
-a Figma file. Token names and component semantics are designed to map
-cleanly to any platform. Output must never default to web-only.
+Panda is Figma-native and platform-agnostic. Source of truth is always a Figma file. Output must never default to web-only.
 
 ---
 
-## 3. MILESTONE PLAN
+## Milestone plan
 
-Four milestones, each gated on the previous. No milestone work begins
-until the one before it is complete — this is a hard rule.
+Each milestone is hard-gated on the previous. No work begins on a milestone until the prior one is complete.
 
-### M1 — Foundation
-Tokens stable. Primitive layer locked. Semantic layer convention agreed
-across platforms. Export pipeline established with a named owner.
-
-Token categories in scope: Spacing, Sizing, Color, Typography, Radius,
-Shadow, Motion, Breakpoints.
-
-### M2 — Core components
-Discrete UI elements built entirely from Foundation tokens.
-Scope: Button, Input, Card, Navigation, Toast, Modal, Badge.
-
-### M3 — Commerce patterns
-Recurring compositions of Core components solving specific UX problems.
-Scope: ProductCard, PriceBlock, AddToCart, FilterBar, ImageGallery.
-
-### M4 — Page templates
-Full-page compositions built from Commerce patterns.
-Scope: PLP, PDP, Cart, Checkout, Account, Search results.
+| Milestone | Scope |
+|-----------|-------|
+| **M1 — Foundation** | All token categories defined. Primitive layer locked. Semantic convention ratified. Export pipeline with named owner. |
+| **M2 — Core components** | Button, Input, Card, Navigation, Toast, Modal, Badge. |
+| **M3 — Commerce patterns** | ProductCard, PriceBlock, AddToCart, FilterBar, ImageGallery. |
+| **M4 — Page templates** | PLP, PDP, Cart, Checkout, Account, Search results. |
 
 ---
 
-## 4. SESSION WORKFLOW
-
-Two session types exist. Both feed the same registry.
+## Session types
 
 ### Design sessions
 **Who:** Facu + Justin only
-**Purpose:** Proposal factory — forming directions before they reach devs
-**Output:** PRO- (proposals) and EXP- (explorations)
-**Rule:** No DS- decisions are made in design sessions
+**Produces:** PRO- proposals and EXP- explorations — no DS- decisions
+**Purpose:** Form directions before they reach developers
 
 ### Cross-functional sessions
 **Who:** Facu + Justin + platform reps (Web, iOS, Android)
-**Purpose:** Ratification, conflict resolution, platform decisions
-**Output:** DS- decisions, OPN- threads, CFX- conflicts
+**Produces:** DS- decisions, OPN- threads, CFX- conflicts
+**Purpose:** Ratification, conflict resolution, platform sign-off
 
 ### Proposal pipeline
 
 ```
 Design session
-    ↓  session-engine --design
-PRO- / EXP- items → proposals staging (status: proposed)
-    ↓  pre-session-planner pulls readiness: ready items
-Dev session agenda
-    ↓  session-engine default
-DS- decision created → PRO- promoted (status: ratified)
+    ↓  PRO- and EXP- items enter proposals staging
+    ↓  pre-session-planner picks up readiness: ready items
+Cross-functional session agenda
+    ↓  team ratifies
+DS- decision created · PRO- promoted to ratified
 ```
 
-**A PRO- reaches the dev agenda only when:**
-1. Readiness is `ready` (not `needs-context`)
-2. No active CFX- exists against it
+A PRO- reaches the dev agenda only when:
+1. `readiness: "ready"` — not `needs-context`
+2. No active CFX- against it
 3. Its layer is within the current milestone scope
 
 ---
 
-## 5. ID CONVENTIONS
+## ID conventions
+
+IDs are permanent. Never reuse or reassign. Design and cross-functional sessions share the same counter.
 
 ```
 DS-{N}-{NNN}    Ratified decision          e.g. DS-4-001
-PRO-{N}-{NNN}   Design proposal (staging)  e.g. PRO-5-001
+PRO-{N}-{NNN}   Design proposal            e.g. PRO-5-001
 EXP-{N}-{NNN}   Design exploration         e.g. EXP-5-001
 OPN-{N}-{NNN}   Open thread                e.g. OPN-2-002
 CFX-{N}-{NNN}   Conflict                   e.g. CFX-3-001
@@ -151,42 +130,16 @@ PAT-{NNN}       Pattern spec               e.g. PAT-001
 TPL-{NNN}       Template spec              e.g. TPL-001
 ```
 
-{N} = session number. {NNN} starts at 001 per session.
-IDs are permanent. Never reuse or reassign.
-Design and cross-functional sessions share the same counter.
-
 ---
 
-## 6. PRIORITY ALGORITHM
+## Priority algorithm
 
-When evaluating what to work on, apply in this order:
+When deciding what to work on, apply in this order:
 
 1. Unresolved CFX- — conflicts block everything downstream
 2. Foundation blockers — OPN- or DEF- preventing M1 from closing
-3. PRO- items ready for ratification — cleared design proposals
-4. OPN- older than 2 sessions — age signals a stuck decision
-5. OPN- from most recent session — fresh but unresolved
-6. At-risk ASM- — could invalidate completed work if wrong
-7. DEF- and low-priority OPN- — if time permits
-
-The milestone gate is hard. No component work enters the agenda until
-Foundation is complete, regardless of how ready a proposal looks.
-
----
-
-## 7. SKILL INVENTORY
-
-All skills are packaged as .skill files and installed in the Claude project.
-All skill modifications must go through skill-creator (draft → test → package).
-
-| Skill | Purpose |
-|-------|---------|
-| `ds-roadmap` | North star — milestones, priority algorithm, brand token strategy |
-| `session-engine` | Processes transcripts — default (cross-functional) and --design modes |
-| `pre-session-planner` | Builds dev session agendas from registry backlog + PRO- staging |
-| `registry-analyst` | Reasons over registry — health check, critical path, delta, readiness |
-| `spec-writer` | Converts DS- decisions into human + JSON specs per layer |
-| `panda-ds` | System vocabulary, layer definitions, platform philosophy |
-
-**Load order rule:** Always load `ds-roadmap` before running
-`pre-session-planner`, `registry-analyst`, `spec-writer`, or `session-engine`.
+3. PRO- items ready for ratification
+4. OPN- older than 2 sessions
+5. OPN- from the most recent session
+6. At-risk ASM- items
+7. DEF- and low-priority OPN- if time permits
