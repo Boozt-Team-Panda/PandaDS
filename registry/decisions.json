@@ -1,8 +1,79 @@
 {
   "meta": {
-    "lastDecision": null,
-    "lastSession": 0,
-    "lastUpdated": null
+    "lastDecision": "DS-005",
+    "lastSession": 1,
+    "lastUpdated": "2026-01-27"
   },
-  "decisions": []
+  "decisions": [
+    {
+      "id": "DS-001",
+      "session": 1,
+      "date": "2026-01-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "Three-layer spacing token system adopted",
+      "decision": "Spacing tokens follow three layers: primitive (raw values), semantic (layout rules), and component (platform-specific exceptions). This mirrors the pattern already used for colors and typography.",
+      "rationale": "A three-layer system allows combining and nesting design modes (platform, brand, accessibility) without creating an explosion of top-level tokens. The semantic layer keeps design decisions consistent; the component layer isolates exceptions so the semantic layer stays clean.",
+      "constraints": [
+        "Semantic layer must remain finite — it should not 'explode'",
+        "Component layer is reserved for platform-specific exceptions only, not general component styling",
+        "Follows the same pattern as colors and typography"
+      ],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-002",
+      "session": 1,
+      "date": "2026-01-27",
+      "status": "stable",
+      "category": "naming",
+      "title": "Token layer terminology standardised",
+      "decision": "Agreed terminology across all platforms: 'reference' = primitive layer, 'system' = semantic layer, 'component' = component layer.",
+      "rationale": "Different participants were using 'semantic' and 'system' interchangeably. Aligning on one vocabulary prevents confusion in cross-platform discussions.",
+      "constraints": [],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-003",
+      "session": 1,
+      "date": "2026-01-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "4-point spacing grid adopted",
+      "decision": "Spacing primitives are based on a 4-point grid, not 8-point.",
+      "rationale": "Provides finer granularity needed for micro-spacing decisions while still maintaining a systematic scale.",
+      "constraints": [],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-004",
+      "session": 1,
+      "date": "2026-01-27",
+      "status": "stable",
+      "category": "governance",
+      "title": "Semantic layer governance: automated, finite, all-platform approval required",
+      "decision": "Any changes to primitive or semantic layer tokens must be agreed upon by all platforms (iOS, Android, web). The semantic layer must be automated and kept finite. Changes will flow through a dedicated Slack channel or MR approval process.",
+      "rationale": "The semantic layer acts as a shared contract. Unilateral changes create blast-radius problems across all platforms. Automation ensures consistency and prevents manual drift.",
+      "constraints": [
+        "No token additions to primitive or semantic layers without cross-platform sign-off",
+        "Automation is a prerequisite for the semantic layer to be viable at scale"
+      ],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-005",
+      "session": 1,
+      "date": "2026-01-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "Component layer restricted to platform-specific exceptions",
+      "decision": "Component-level spacing tokens are allowed but must be reserved for genuine platform-specific differences (e.g. iOS vs Android measurement conventions, accessibility safe-area insets). They are not to be created for general component styling.",
+      "rationale": "Rasmus' experience at a previous company showed that full component tokenisation resulted in enormous overhead (10,000+ tokens) with only 0.5% of them ever deviating from the default. Patrick emphasised that component token explosion would hurt code scalability.",
+      "constraints": [
+        "Only introduce a component token when the semantic layer cannot handle the exception",
+        "Component tokens must be agreed before creation, not added ad-hoc"
+      ],
+      "supersededBy": null
+    }
+  ]
 }

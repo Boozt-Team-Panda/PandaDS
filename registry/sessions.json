@@ -1,3 +1,25 @@
 {
-  "sessions": []
+  "sessions": [
+    {
+      "id": 1,
+      "date": "2026-01-27",
+      "type": "sync",
+      "title": "Design Sync — Spacing token layers",
+      "attendees": [
+        "Facundo Mau",
+        "Justin Daneman",
+        "Patrick Ahrentløv",
+        "Daniel Wennberg",
+        "Rasmus Sander Larsen",
+        "Danas Paulikas"
+      ],
+      "decisionsRatified": ["DS-001", "DS-002", "DS-003", "DS-004", "DS-005"],
+      "openThreads": [
+        "Facundo + Justin to draft semantic and component spacing tokens",
+        "iOS, Android, and web teams to propose their ideal spacing naming conventions in Slack",
+        "Next session: present example of primitives + semantic layer"
+      ],
+      "notes": "Icons topic postponed to a future session."
+    }
+  ]
 }

@@ -1,8 +1,53 @@
 {
-  "milestone": null,
-  "milestoneStatus": "not started",
-  "tokenCategories": [],
+  "milestone": "Spacing token system — definition phase",
+  "milestoneStatus": "in progress",
+  "tokenCategories": [
+    {
+      "name": "color",
+      "layers": ["primitive", "semantic"],
+      "status": "stable"
+    },
+    {
+      "name": "typography",
+      "layers": ["primitive", "semantic"],
+      "status": "stable"
+    },
+    {
+      "name": "spacing",
+      "layers": ["primitive", "semantic", "component"],
+      "status": "draft — architecture agreed, tokens not yet defined"
+    }
+  ],
   "componentList": [],
-  "openThreads": [],
-  "lastSync": null
+  "openThreads": [
+    {
+      "id": "OT-001",
+      "owner": "Facundo Mau + Justin Daneman",
+      "description": "Draft semantic and component spacing tokens for review",
+      "status": "open",
+      "createdSession": 1
+    },
+    {
+      "id": "OT-002",
+      "owner": "iOS, Android, web teams",
+      "description": "Propose ideal spacing naming conventions from each platform's perspective (post in Slack)",
+      "status": "open",
+      "createdSession": 1
+    },
+    {
+      "id": "OT-003",
+      "owner": "Justin Daneman",
+      "description": "Share the spacing presentation from the previous session",
+      "status": "open",
+      "createdSession": 1
+    },
+    {
+      "id": "OT-004",
+      "owner": "All",
+      "description": "Next session: review primitives + semantic layer example from design",
+      "status": "open",
+      "createdSession": 1
+    }
+  ],
+  "lastSync": "2026-01-27"
 }
