@@ -1,0 +1,54 @@
+name: Validate registry
+
+on:
+  pull_request:
+    paths:
+      - 'registry/decisions.json'
+      - 'registry/sessions.json'
+      - 'registry/state.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate decisions.json
+        run: |
+          echo "Validating decisions.json..."
+          python3 -c "
+          import json, sys
+
+          with open('registry/decisions.json') as f:
+              data = json.load(f)
+
+          assert 'meta' in data, 'Missing meta block'
+          assert 'decisions' in data, 'Missing decisions array'
+
+          ids = [d['id'] for d in data['decisions']]
+          assert len(ids) == len(set(ids)), 'Duplicate DS IDs found'
+
+          for d in data['decisions']:
+              assert d.get('status') in ['draft', 'stable', 'superseded'], \
+                  f'{d[\"id\"]}: invalid status {d.get(\"status\")}'
+              assert not d.get('statement', '').endswith('.'), \
+                  f'{d[\"id\"]}: statement must not end with a period'
+
+          print(f'OK — {len(ids)} decisions, no duplicates, all valid')
+          "
+
+      - name: Validate sessions.json
+        run: |
+          echo "Validating sessions.json..."
+          python3 -c "
+          import json
+
+          with open('registry/sessions.json') as f:
+              data = json.load(f)
+
+          assert 'sessions' in data, 'Missing sessions array'
+          nums = [s['session'] for s in data['sessions']]
+          assert len(nums) == len(set(nums)), 'Duplicate session numbers found'
+          print(f'OK — {len(nums)} sessions, no duplicates')
+          "
