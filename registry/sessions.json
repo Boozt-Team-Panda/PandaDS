@@ -21,5 +21,29 @@
       ],
       "notes": "Icons topic postponed to a future session."
     }
+  ,
+    {
+      "id": 2,
+      "date": "2026-02-27",
+      "type": "sync",
+      "title": "Design Sync — Spacing naming conventions and primitives",
+      "attendees": [
+        "Justin Daneman",
+        "Patrick Ahrentløv",
+        "Lasse Lind Dencker Sørensen",
+        "Daniel Wennberg",
+        "Rasmus Sander Larsen",
+        "Danas Paulikas"
+      ],
+      "decisionsRatified": ["DS-006", "DS-007", "DS-008", "DS-009", "DS-010", "DS-011"],
+      "openThreads": [
+        "OT-005: Web team to justify need for spacing values above 80 (specifically 128) — check with Philip",
+        "OT-006: Justin + Danas to create scaled-up page examples (PDP etc.) applying spacing system across web and mobile",
+        "OT-007: Fix export script to only expose semantic layer tokens to developers, not primitives",
+        "OT-008: Sizes topic for next session",
+        "OT-009: Icons still pending"
+      ],
+      "notes": "OT-001 partially resolved — semantic use cases defined. OT-002 partially resolved — 'flow' name accepted, 'boundary' renamed to 'gutter'. Facundo was absent this session."
+    }
   ]
 }

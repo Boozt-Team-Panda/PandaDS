@@ -1,8 +1,8 @@
 {
   "meta": {
-    "lastDecision": "DS-005",
-    "lastSession": 1,
-    "lastUpdated": "2026-01-27"
+    "lastDecision": "DS-011",
+    "lastSession": 2,
+    "lastUpdated": "2026-02-27"
   },
   "decisions": [
     {
@@ -72,6 +72,90 @@
       "constraints": [
         "Only introduce a component token when the semantic layer cannot handle the exception",
         "Component tokens must be agreed before creation, not added ad-hoc"
+      ],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-006",
+      "session": 2,
+      "date": "2026-02-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "Semantic spacing layer: four use cases defined",
+      "decision": "The semantic spacing layer has four named use cases: edge (space from a container's outermost boundary to its first child), flow (vertical space between elements), inline (horizontal space between elements), gutter (outermost page-level space, replacing the term 'boundary').",
+      "rationale": "Provides a finite, meaningful vocabulary for spacing decisions that works across platforms. 'Gutter' was accepted over 'boundary' as clearer terminology. 'Flow' was accepted for vertical spacing despite Android naming conflicts because perfect naming was unattainable and progress needed to be made.",
+      "constraints": [
+        "edge: from container edge to first child element",
+        "flow: vertical gap between elements (e.g. items in a list)",
+        "inline: horizontal gap between elements (e.g. icon and text in a button)",
+        "gutter: outermost space from page edge to first layout element — used at page level only"
+      ],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-007",
+      "session": 2,
+      "date": "2026-02-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "No platform-specific values in the primitive layer",
+      "decision": "iOS-specific primitives (e.g. safe area insets) must not be added to the primitive layer. Platform differences are handled via Figma modes at the semantic or component layer.",
+      "rationale": "Adding iOS-specific primitives would pollute the shared primitive set. Figma modes already provide the mechanism to deliver different values per platform from the same token name.",
+      "constraints": [],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-008",
+      "session": 2,
+      "date": "2026-02-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "Size tokens are distinct from spacing tokens",
+      "decision": "Size tokens (stroke width, font size, icon size, etc.) are a separate primitive category from spacing tokens. The two must not be mixed.",
+      "rationale": "Spacing describes the distance between or around elements. Size describes the dimensions of elements themselves. Conflating them leads to misuse and token bloat.",
+      "constraints": [],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-009",
+      "session": 2,
+      "date": "2026-02-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "Primitive set must be minimal and justified; new values increment by 4",
+      "decision": "The primitive spacing set starts as small as possible. Values are only added when a concrete use case is demonstrated (e.g. via scaled-up page examples). Any new value added must be a multiple of 4. Large values like 128 must be explicitly justified before inclusion.",
+      "rationale": "Starting large creates values that will be misused as shortcuts instead of correctly implementing constraints. The process for adding new primitives (with justification) prevents bloat and preserves the integrity of the system.",
+      "constraints": [
+        "All primitives must be multiples of 4",
+        "A use case must be demonstrated before a new primitive is added",
+        "Large values (>80) require explicit written justification"
+      ],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-010",
+      "session": 2,
+      "date": "2026-02-27",
+      "status": "stable",
+      "category": "spacing",
+      "title": "Layer responsibility: semantic = brand, component = platform",
+      "decision": "The semantic layer handles brand-level differences (e.g. Boost vs Outlet Nation spacing). The component layer handles platform-level differences (e.g. iOS 44dp vs Android 48dp touch targets on buttons).",
+      "rationale": "Clarifies the distinct purpose of each layer and prevents the two concerns from bleeding into each other. Brand modes in Figma operate at the semantic layer (same mechanism as colors); platform specifics require component-level tokens to be isolated.",
+      "constraints": [],
+      "supersededBy": null
+    },
+    {
+      "id": "DS-011",
+      "session": 2,
+      "date": "2026-02-27",
+      "status": "stable",
+      "category": "governance",
+      "title": "Primitives must not be exposed to developers in code",
+      "decision": "The token export script must be updated so that only semantic layer tokens (edge, flow, inline, gutter with their size variants) are accessible to developers. Primitive tokens must not be directly reachable in code.",
+      "rationale": "The current script exports everything indiscriminately. If primitives are accessible, developers will use them directly instead of going through the semantic layer, bypassing the system's intent and making future changes unsafe.",
+      "constraints": [
+        "Export script must filter to semantic layer and above only",
+        "This is a prerequisite before the spacing system can be considered production-ready"
       ],
       "supersededBy": null
     }
